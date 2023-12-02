@@ -40,3 +40,7 @@ notes/
 
 # fontend mentor assets
 frontend-mentor-assets/
+
+# lock files
+package-lock.json
+

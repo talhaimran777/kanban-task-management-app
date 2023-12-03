@@ -26,7 +26,6 @@ const Button = ({
     'font-bold': true,
     'rounded-full': true,
     'w-full': !!fluid,
-    'outline-none': true,
     transition: true,
   }
 

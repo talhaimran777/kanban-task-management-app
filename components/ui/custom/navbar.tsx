@@ -21,7 +21,7 @@ const Navbar = () => {
           <MobileMenuDialog
             trigger={
               <DialogTrigger>
-                <div className='flex justify-between items-center gap-2 focus-visible:outline-none'>
+                <div className='flex justify-between items-center gap-2'>
                   <p className='text-lg font-bold leading-6'>Platform Launch</p>
                   <Image
                     src={ChevronDownIcon}

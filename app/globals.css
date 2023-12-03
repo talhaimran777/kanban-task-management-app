@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  outline: none;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}

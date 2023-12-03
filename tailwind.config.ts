@@ -23,7 +23,10 @@ module.exports = {
         'red-secondary': '#FF9898',
         'black-primary': '#000112',
         'grey-primary': '#F4F7FD',
+        'grey-secondary': '#F4F7FD',
         'grey-ternary': '#828FA3',
+        'dark-grey': '#2B2C37',
+        'very-dark-grey': '#20212C',
       },
       keyframes: {
         'accordion-down': {

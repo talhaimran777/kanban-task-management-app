@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
-import Navbar from 'components/ui/custom/navbar'
+import Navbar from 'ui/custom/navbar'
+
+import { ThemeProvider } from 'providers/theme-provider'
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -18,10 +20,17 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={plusJakartaSans.className}>
-        <div className='flex flex-col h-screen'>
-          <Navbar />
-          {children}
-        </div>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className='flex flex-col h-screen dark:bg-dark-grey'>
+            <Navbar />
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   )

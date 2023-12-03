@@ -31,7 +31,7 @@ const Button = ({
   }
 
   return (
-    <button className={clsx(colors[variant], sizes[size], sizes, common)}>
+    <button className={clsx(colors[variant], sizes[size], common)}>
       {text}
     </button>
   )

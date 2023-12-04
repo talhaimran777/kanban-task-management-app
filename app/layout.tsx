@@ -4,6 +4,7 @@ import './globals.css'
 import Navbar from 'ui/custom/navbar'
 
 import { ThemeProvider } from 'providers/theme-provider'
+import { ThemeSetter } from 'providers/theme-setter'
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -26,10 +27,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className='flex flex-col h-screen dark:bg-dark-grey'>
-            <Navbar />
-            {children}
-          </div>
+          <ThemeSetter>
+            <div className='flex flex-col h-screen dark:bg-dark-grey'>
+              <Navbar />
+              {children}
+            </div>
+          </ThemeSetter>
         </ThemeProvider>
       </body>
     </html>

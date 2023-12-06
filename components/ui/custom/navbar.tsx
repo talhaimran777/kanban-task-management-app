@@ -8,6 +8,7 @@ import Boards from 'mock/data.json'
 import Image from 'next/image'
 import { Data } from 'types/mock'
 import MobileMenuDialog from 'custom/mobile-menu-dialog'
+import Typography from 'custom/typography'
 
 const data = Boards as Data
 
@@ -22,7 +23,11 @@ const Navbar = () => {
             trigger={
               <DialogTrigger>
                 <div className='flex justify-between items-center gap-2'>
-                  <p className='text-lg font-bold leading-6'>Platform Launch</p>
+                  <Typography
+                    text='Platform Launch'
+                    size='large'
+                    variant='heading'
+                  />
                   <Image
                     src={ChevronDownIcon}
                     alt='ChevronDownIcon'

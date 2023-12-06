@@ -9,6 +9,7 @@ import { Board } from 'types/mock'
 import MobileMenuBoardList from 'custom/mobile-menu-board-list'
 import ThemeToggler from 'custom/theme-toggler'
 import CreateBoardMenuItem from 'custom/create-board-menu-item'
+import Typography from 'custom/typography'
 
 const MobileMenuDialog = ({
   boards,
@@ -22,9 +23,12 @@ const MobileMenuDialog = ({
       {trigger}
       <DialogContent>
         <DialogTitle className='mx-6 mt-4'>
-          <h1 className='text-xs font-bold leading-6 text-grey-ternary uppercase tracking-widest'>
-            All Boards (3)
-          </h1>
+          <Typography
+            text='All Boards (3)'
+            variant='heading'
+            size='small'
+            className='text-grey-ternary uppercase tracking-widest'
+          />
         </DialogTitle>
         <DialogDescription>
           <MobileMenuBoardList boards={boards} />

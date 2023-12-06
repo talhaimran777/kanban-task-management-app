@@ -1,5 +1,6 @@
 import BoardIcon from 'assets/svg-icons/BoardIcon'
 import MenuItem from 'custom/menu-item'
+import Typography from 'custom/typography'
 
 const CreateBoardMenuItem = () => {
   return (
@@ -7,7 +8,11 @@ const CreateBoardMenuItem = () => {
       <MenuItem
         icon={<BoardIcon />}
         typography={
-          <h1 className='text-md font-bold leading-6'>+ Create New Board</h1>
+          <Typography
+            text='+ Create New Board'
+            variant='heading'
+            size='medium'
+          />
         }
       />
     </div>

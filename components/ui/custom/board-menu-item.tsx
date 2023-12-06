@@ -2,6 +2,7 @@ import { Board } from 'types/mock'
 import clsx from 'clsx'
 import BoardIcon from 'assets/svg-icons/BoardIcon'
 import MenuItem from 'custom/menu-item'
+import Typography from 'custom/typography'
 
 const BoardMenuItem = ({ board }: { board: Board }) => {
   const getStyles = (isActive: boolean | undefined) => {
@@ -24,7 +25,7 @@ const BoardMenuItem = ({ board }: { board: Board }) => {
       <MenuItem
         icon={<BoardIcon />}
         typography={
-          <h1 className='text-md font-bold leading-6'>{board?.name}</h1>
+          <Typography text={board?.name} variant='heading' size='medium' />
         }
       />
     </div>

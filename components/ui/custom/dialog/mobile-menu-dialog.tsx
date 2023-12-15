@@ -7,7 +7,7 @@ import {
 } from 'ui/dialog'
 import { ReactNode } from 'react'
 import { Board } from 'types/mock'
-import MobileMenuBoardList from 'custom/mobile-menu-board-list'
+import BoardList from 'custom/board-list'
 import ThemeToggler from 'custom/theme-toggler'
 import CreateBoardMenuItem from 'custom/create-board-menu-item'
 import Typography from 'custom/typography'
@@ -33,7 +33,7 @@ const MobileMenuDialog = ({
           <DialogClose id='close-mobile-menu-dialog'></DialogClose>
         </DialogTitle>
         <DialogDescription>
-          <MobileMenuBoardList boards={boards} />
+          <BoardList boards={boards} />
           <CreateBoardMenuItem />
           <ThemeToggler />
         </DialogDescription>

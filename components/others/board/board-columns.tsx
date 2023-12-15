@@ -5,10 +5,10 @@ import { Column } from 'types/mock'
 const BoardColumns = ({ columns }: { columns: Column[] }) => {
   return (
     <div className='flex gap-6 max-h-[calc(100vh-72px)] h-full w-full px-6 overflow-auto'>
-      {columns.map((column) => (
-        <BoardColumn column={column} />
+      {columns.map((column, index) => (
+        <BoardColumn column={column} key={index} />
       ))}
-      <div className='flex justify-center items-center min-w-[280px] dark:bg-dark-grey bg-[#EAF0FA] my-6'>
+      <div className='flex justify-center items-center min-w-[280px] dark:bg-dark-grey bg-white my-6 shadow-md sticky top-[24px] rounded-md'>
         <div
           onClick={() => console.log('Create a new column')}
           className='cursor-pointer'

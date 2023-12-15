@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from 'ui/select'
 import { z } from 'zod'
-import useData from '../../store/data'
+import useData from 'store/data'
 
 const AddTaskForm = () => {
   const form = useForm<z.infer<typeof addTaskFormSchema>>({
@@ -81,7 +81,7 @@ const AddTaskForm = () => {
         </FormLabel>
 
         {subtaskFields.map((field, index) => (
-          <div className='flex justify-between items-center gap-4'>
+          <div className='flex justify-between items-center gap-4' key={index}>
             <FormInputGroup
               name={`subtasks.${index}.name`}
               label='Subtask'

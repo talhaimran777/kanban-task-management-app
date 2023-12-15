@@ -1,17 +1,9 @@
-const CrossIcon = ({
-  className,
-  height = 18,
-  width = 18,
-}: {
-  height?: number
-  width?: number
-  className?: string
-}) => {
+const CrossIcon = ({ className }: { className?: string }) => {
   const svg = (
     <svg
       className={className}
-      width={width}
-      height={height}
+      width='15'
+      height='15'
       xmlns='http://www.w3.org/2000/svg'
     >
       <g fill='currentColor' fill-rule='evenodd'>

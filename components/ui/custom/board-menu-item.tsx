@@ -8,7 +8,7 @@ const BoardMenuItem = ({ board }: { board: Board }) => {
   const getStyles = (isActive: boolean | undefined) => {
     const colors = {
       'bg-purple-primary text-white': !!isActive,
-      'hover:bg-[#EFEFF9] dark:hover:bg-white hover:text-purple-primary cursor-pointer':
+      'hover:bg-[#EFEFF9] dark:hover:bg-white hover:text-purple-primary text-grey-ternary cursor-pointer':
         !isActive,
     }
 

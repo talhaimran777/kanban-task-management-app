@@ -1,16 +1,11 @@
-import Container from 'layout/contianer'
-import { DialogTrigger } from 'ui/dialog'
+import AddTaskDialog from 'custom/dialog/add-task-dialog'
 import AddTaskIcon from 'images/icon-add-task-mobile.svg'
-import ChevronDownIcon from 'images/icon-chevron-down.svg'
 import VerticalEllipsisIcon from 'images/icon-vertical-ellipsis.svg'
 import Logo from 'images/logo-mobile.svg'
-import Boards from 'mock/data.json'
+import Container from 'layout/contianer'
 import Image from 'next/image'
-import { Data } from 'types/mock'
-import MobileMenuDialog from 'custom/mobile-menu-dialog'
-import Typography from 'custom/typography'
-
-const data = Boards as Data
+import SelectedBoard from 'others/board/selected-board'
+import { DialogTrigger } from 'ui/dialog'
 
 // 72 px height mobile
 const Navbar = () => {
@@ -19,36 +14,23 @@ const Navbar = () => {
       <div className='py-5 bg-white dark:bg-dark-grey flex justify-between items-center'>
         <div className='flex justify-between items-center gap-4'>
           <Image src={Logo} alt='Logo' height={25} width={25} />
-          <MobileMenuDialog
+          <SelectedBoard />
+        </div>
+        <div className='flex justify-between items-center gap-4'>
+          <AddTaskDialog
             trigger={
               <DialogTrigger>
-                <div className='flex justify-between items-center gap-2'>
-                  <Typography
-                    text='Platform Launch'
-                    size='large'
-                    variant='heading'
-                  />
+                <div className='bg-purple-secondary py-[10px] px-[18px] rounded-full'>
                   <Image
-                    src={ChevronDownIcon}
-                    alt='ChevronDownIcon'
+                    src={AddTaskIcon}
+                    alt='Add Task Icon'
                     height={12}
                     width={12}
                   />
                 </div>
               </DialogTrigger>
             }
-            boards={data.boards}
           />
-        </div>
-        <div className='flex justify-between items-center gap-4'>
-          <div className='bg-purple-secondary py-[10px] px-[18px] rounded-full'>
-            <Image
-              src={AddTaskIcon}
-              alt='Add Task Icon'
-              height={12}
-              width={12}
-            />
-          </div>
           <Image
             src={VerticalEllipsisIcon}
             alt='Vertical Ellipsis Icon'

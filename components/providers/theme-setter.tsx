@@ -16,7 +16,7 @@ export function ThemeSetter({ children }: { children: React.ReactNode }) {
     } else {
       setTheme('light')
     }
-  }, [])
+  }, [setTheme])
 
   return children
 }

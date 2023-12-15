@@ -23,7 +23,7 @@ const Typography = ({
     body: {
       extraLarge: '',
       large: '',
-      medium: '',
+      medium: 'text-[13px] leading-[23px]',
       small: '',
       common: '',
     },

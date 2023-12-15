@@ -1,5 +1,6 @@
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
@@ -24,11 +25,12 @@ const MobileMenuDialog = ({
       <DialogContent>
         <DialogTitle className='mx-6 mt-4'>
           <Typography
-            text='All Boards (3)'
+            text={`All Boards (${boards.length})`}
             variant='heading'
             size='small'
             className='text-grey-ternary uppercase tracking-widest'
           />
+          <DialogClose id='close-mobile-menu-dialog'></DialogClose>
         </DialogTitle>
         <DialogDescription>
           <MobileMenuBoardList boards={boards} />

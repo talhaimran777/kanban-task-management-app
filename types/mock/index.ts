@@ -1,5 +1,6 @@
 export interface Data {
   boards: Board[]
+  currentBoard: string
 }
 
 export interface Board {
@@ -8,19 +9,21 @@ export interface Board {
   isActive?: boolean
 }
 
-interface Column {
+export interface Column {
   name: string
   tasks: Task[]
 }
 
-interface Task {
+export type Status = 'Todo' | 'Doing' | 'Done'
+
+export interface Task {
   title: string
   description: string
-  status: string
-  subtasks: SubTask[]
+  status: Status
+  subtasks?: SubTask[]
 }
 
-interface SubTask {
+export interface SubTask {
   title: string
   isCompleted: boolean
 }

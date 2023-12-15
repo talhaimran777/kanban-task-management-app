@@ -1,5 +1,3 @@
-'use client'
-
 import { Board } from 'types/mock'
 import BoardMenuItem from 'custom/board-menu-item'
 

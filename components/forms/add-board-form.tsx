@@ -20,7 +20,9 @@ const AddBoardForm = () => {
     if (values) {
       // Do something with the values
       // and close dialog.
-      document.querySelector('#close-create-board-dialog')?.click()
+      //
+      // Create a global state to manage open/close dialogs
+      // document.querySelector('#close-create-board-dialog')?.click()
     }
   }
 

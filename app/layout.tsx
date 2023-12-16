@@ -6,6 +6,7 @@ import Navbar from 'ui/custom/navbar'
 import { ThemeProvider } from 'providers/theme-provider'
 import { ThemeSetter } from 'providers/theme-setter'
 import Sidebar from 'custom/sidebar'
+import ShowSidebar from 'custom/show-sidebar'
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -29,10 +30,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ThemeSetter>
-            <div className='flex flex-col h-screen dark:bg-dark-grey'>
+            <div className='flex flex-col h-screen dark:bg-very-dark-grey'>
               <Navbar />
               <div className='flex justify-between flex-1'>
                 <Sidebar />
+                <ShowSidebar />
                 {children}
               </div>
             </div>

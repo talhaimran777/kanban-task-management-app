@@ -10,36 +10,34 @@ import { DialogTrigger } from 'ui/dialog'
 // 72 px height mobile
 const Navbar = () => {
   return (
-    <Container>
-      <div className='py-5 bg-white dark:bg-dark-grey flex justify-between items-center'>
-        <div className='flex justify-between items-center gap-4'>
-          <Image src={Logo} alt='Logo' height={25} width={25} />
-          <SelectedBoard />
-        </div>
-        <div className='flex justify-between items-center gap-4'>
-          <AddTaskDialog
-            trigger={
-              <DialogTrigger>
-                <div className='bg-purple-secondary py-[10px] px-[18px] rounded-full'>
-                  <Image
-                    src={AddTaskIcon}
-                    alt='Add Task Icon'
-                    height={12}
-                    width={12}
-                  />
-                </div>
-              </DialogTrigger>
-            }
-          />
-          <Image
-            src={VerticalEllipsisIcon}
-            alt='Vertical Ellipsis Icon'
-            height={4}
-            width={4}
-          />
-        </div>
+    <div className='py-5 bg-white dark:bg-dark-grey flex justify-between items-center px-6'>
+      <div className='flex justify-between items-center gap-4'>
+        <Image src={Logo} alt='Logo' height={25} width={25} />
+        <SelectedBoard />
       </div>
-    </Container>
+      <div className='flex justify-between items-center gap-4'>
+        <AddTaskDialog
+          trigger={
+            <DialogTrigger>
+              <div className='bg-purple-secondary py-[10px] px-[18px] rounded-full'>
+                <Image
+                  src={AddTaskIcon}
+                  alt='Add Task Icon'
+                  height={12}
+                  width={12}
+                />
+              </div>
+            </DialogTrigger>
+          }
+        />
+        <Image
+          src={VerticalEllipsisIcon}
+          alt='Vertical Ellipsis Icon'
+          height={4}
+          width={4}
+        />
+      </div>
+    </div>
   )
 }
 

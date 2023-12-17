@@ -14,14 +14,14 @@ const Sidebar = () => {
   const open = useSidebar((state) => state.open)
 
   const classes = {
-    '-translate-x-[261px]': !open,
+    'w-0 hidden': !open,
+    'md:flex-col hidden md:flex min-w-[261px] bg-white dark:bg-dark-grey pb-6': open,
   }
 
   return (
     <div
       className={cn(
         clsx(classes),
-        `md:flex-col hidden md:flex min-w-[261px] bg-white dark:bg-dark-grey pb-6 transition ease-in-out duration-700 fixed h-[calc(100%-72px)]`
       )}
     >
       <div className='flex-1'>

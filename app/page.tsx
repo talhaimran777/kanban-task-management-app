@@ -16,7 +16,7 @@ export default function Home() {
     <div
       className={cn(
         clsx(classes),
-        `flex justify-center items-start bg-grey-primary dark:bg-very-dark-grey h-full w-full`
+        `flex justify-center items-center bg-grey-primary dark:bg-very-dark-grey h-full w-full`
       )}
     >
       <BoardInfo />

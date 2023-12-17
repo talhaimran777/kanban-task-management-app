@@ -7,13 +7,32 @@ import useData from 'store/data'
 import { Column } from 'types/mock'
 
 const BoardInfo = () => {
-  const { currentBoard: boardName, boards } = useData((state) => state.data)
-  const currentBoard = boards.find((board) => board.name === boardName)
-  const boardColumns = currentBoard?.columns as Column[]
+  const { selectedBoard, boards } = useData((state) => state.data)
+  const currentBoard = boards.find((board) => board.id === selectedBoard)
 
-  return !!boardColumns ? (
-    <BoardColumns columns={boardColumns as Column[]} />
-  ) : (
+  // If no board found
+  if (!currentBoard) {
+    return (
+      <div className='text-center'>
+        <Typography
+          text='No Available Boards'
+          variant='heading'
+          size='large'
+          className='mb-6 text-grey-ternary'
+        />
+      </div>
+    )
+  }
+
+  const boardColumns = currentBoard.columns as Column[]
+
+  // If board contains columns
+  if (!!boardColumns?.length) {
+    return <BoardColumns columns={boardColumns as Column[]} />
+  }
+
+  // If board does not contains columns
+  return (
     <div className='text-center'>
       <Typography
         text='This board is empty. Create a new column to get started.'

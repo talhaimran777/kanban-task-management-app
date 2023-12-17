@@ -1,19 +1,24 @@
 import Typography from 'custom/typography'
-import React, { ReactNode } from 'react'
+import AddBoardForm from 'forms/add-board-form'
+import useDialog from 'store/dialog'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
-  DialogTrigger,
 } from 'ui/dialog'
-import AddBoardForm from 'forms/add-board-form'
 
-const AddBoardDialog = ({ trigger }: { trigger: ReactNode }) => {
+const AddBoardDialog = () => {
+  const { open, type, setOpen, setType } = useDialog()
+
   return (
-    <Dialog>
-      <DialogTrigger>{trigger}</DialogTrigger>
+    <Dialog
+      open={open && type === 'add-board-dialog'}
+      onOpenChange={() => {
+        setOpen(false)
+        setType('')
+      }}
+    >
       <DialogContent className='p-6'>
         <DialogTitle className='flex justify-between items-center'>
           <Typography
@@ -22,7 +27,6 @@ const AddBoardDialog = ({ trigger }: { trigger: ReactNode }) => {
             size='large'
             className='text-black dark:text-white capitalize'
           />
-          <DialogClose id='close-create-board-dialog'></DialogClose>
         </DialogTitle>
         <DialogDescription>
           <AddBoardForm />

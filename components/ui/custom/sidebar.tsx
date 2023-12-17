@@ -15,15 +15,12 @@ const Sidebar = () => {
 
   const classes = {
     'w-0 hidden': !open,
-    'md:flex-col hidden md:flex min-w-[261px] bg-white dark:bg-dark-grey pb-6': open,
+    'md:flex-col hidden md:flex min-w-[261px] bg-white dark:bg-dark-grey pb-6':
+      open,
   }
 
   return (
-    <div
-      className={cn(
-        clsx(classes),
-      )}
-    >
+    <div className={cn(clsx(classes))}>
       <div className='flex-1'>
         <BoardList boards={boards} />
         <CreateBoardMenuItem />

@@ -1,18 +1,26 @@
+'use client'
+
 import Typography from 'custom/typography'
-import React, { ReactNode } from 'react'
+import AddTaskForm from 'forms/add-task-form'
+import useDialog from 'store/dialog'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from 'ui/dialog'
-import AddTaskForm from 'forms/add-task-form'
 
-const AddTaskDialog = ({ trigger }: { trigger: ReactNode }) => {
+const AddTaskDialog = () => {
+  const { open, type, setOpen, setType } = useDialog()
+
   return (
-    <Dialog>
-      {trigger}
+    <Dialog
+      open={open && type === 'add-task-dialog'}
+      onOpenChange={() => {
+        setOpen(false)
+        setType('')
+      }}
+    >
       <DialogContent className='p-6 max-h-[calc(100vh-5%)] overflow-auto'>
         <DialogTitle className='flex justify-between items-center'>
           <Typography
@@ -21,7 +29,6 @@ const AddTaskDialog = ({ trigger }: { trigger: ReactNode }) => {
             size='large'
             className='text-black dark:text-white capitalize'
           />
-          <DialogClose id='close-create-task-dialog'></DialogClose>
         </DialogTitle>
         <DialogDescription>
           <AddTaskForm />

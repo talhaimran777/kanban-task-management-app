@@ -1,15 +1,17 @@
 export interface Data {
   boards: Board[]
-  currentBoard: string
+  selectedBoard?: number
 }
 
 export interface Board {
+  id: number
   name: string
-  columns: Column[]
+  columns?: Column[]
   isActive?: boolean
 }
 
 export interface Column {
+  id: number
   name: string
   tasks: Task[]
 }
@@ -17,6 +19,7 @@ export interface Column {
 export type Status = 'Todo' | 'Doing' | 'Done'
 
 export interface Task {
+  id: number
   title: string
   description: string
   status: Status
@@ -24,6 +27,7 @@ export interface Task {
 }
 
 export interface SubTask {
+  id: number
   title: string
   isCompleted: boolean
 }

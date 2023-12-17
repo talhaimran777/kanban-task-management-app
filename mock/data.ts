@@ -2,96 +2,14 @@ import { Data, Task } from 'types/mock'
 
 const tasks: Task[] = [
   {
+    id: 1,
     title: 'Build UI for on boarding!',
     status: 'Todo',
-    description: '0 of 3 subtasks',
+    description: '0 of 1 subtasks',
     subtasks: [
       {
+        id: 1,
         title: 'Sign up page',
-        isCompleted: false,
-      },
-      {
-        title: 'Sign in page',
-        isCompleted: false,
-      },
-      {
-        title: 'Welcome page',
-        isCompleted: false,
-      },
-    ],
-  },
-  {
-    title: 'Build UI for on boarding!',
-    status: 'Todo',
-    description: '0 of 3 subtasks',
-    subtasks: [
-      {
-        title: 'Sign up page',
-        isCompleted: false,
-      },
-      {
-        title: 'Sign in page',
-        isCompleted: false,
-      },
-      {
-        title: 'Welcome page',
-        isCompleted: false,
-      },
-    ],
-  },
-  {
-    title: 'Build UI for on boarding!',
-    status: 'Todo',
-    description: '0 of 3 subtasks',
-    subtasks: [
-      {
-        title: 'Sign up page',
-        isCompleted: false,
-      },
-      {
-        title: 'Sign in page',
-        isCompleted: false,
-      },
-      {
-        title: 'Welcome page',
-        isCompleted: false,
-      },
-    ],
-  },
-  {
-    title: 'Build UI for on boarding!',
-    status: 'Todo',
-    description: '0 of 3 subtasks',
-    subtasks: [
-      {
-        title: 'Sign up page',
-        isCompleted: false,
-      },
-      {
-        title: 'Sign in page',
-        isCompleted: false,
-      },
-      {
-        title: 'Welcome page',
-        isCompleted: false,
-      },
-    ],
-  },
-  {
-    title: 'Build UI for on boarding!',
-    status: 'Todo',
-    description: '0 of 3 subtasks',
-    subtasks: [
-      {
-        title: 'Sign up page',
-        isCompleted: false,
-      },
-      {
-        title: 'Sign in page',
-        isCompleted: false,
-      },
-      {
-        title: 'Welcome page',
         isCompleted: false,
       },
     ],
@@ -101,32 +19,18 @@ const tasks: Task[] = [
 const data: Data = {
   boards: [
     {
+      id: 1,
       name: 'Platform Launch',
       columns: [
         {
+          id: 1,
           name: 'Todo',
-          tasks: tasks,
-        },
-        {
-          name: 'Doing',
-          tasks: tasks,
-        },
-        {
-          name: 'Doing',
-          tasks: tasks,
-        },
-        {
-          name: 'Doing',
-          tasks: tasks,
-        },
-        {
-          name: 'Doing',
-          tasks: tasks,
+          tasks,
         },
       ],
     },
   ],
-  currentBoard: 'Platform Launch',
+  selectedBoard: 1,
 }
 
 export default data

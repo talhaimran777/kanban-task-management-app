@@ -1,10 +1,10 @@
 export interface Data {
     boards: Board[]
-    selectedBoard?: number
+    selectedBoard?: string
 }
 
 export interface Board {
-    id: number
+    id: string
     name: string
     columns?: Column[]
     isActive?: boolean

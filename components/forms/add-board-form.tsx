@@ -6,10 +6,14 @@ import Button from 'custom/button'
 import FormInputGroup from 'custom/form/form-input-group'
 import { useFieldArray, useForm } from 'react-hook-form'
 import addBoardFormSchema from 'schema/add-board-form-schema'
+import addBoardService from 'services/board/addBoardService'
+import useData from 'store/data'
 import { Form } from 'ui/form'
 import { z } from 'zod'
 
 const AddBoardForm = () => {
+    const { data, setData } = useData()
+
     const form = useForm<z.infer<typeof addBoardFormSchema>>({
         resolver: zodResolver(addBoardFormSchema),
         defaultValues: {
@@ -27,9 +31,17 @@ const AddBoardForm = () => {
         name: 'columns',
     })
 
-    function onSubmit(values: z.infer<typeof addBoardFormSchema>) {
-        if (values) {
-            // Use values to insert into the global state.
+    const onSubmit = async (values: z.infer<typeof addBoardFormSchema>) => {
+        try {
+            await addBoardService({
+                values,
+                // TODO: Research whether we can omit passing the data and setData arguments to this service.
+                // https://github.com/pmndrs/zustand#readingwriting-state-and-reacting-to-changes-outside-of-components
+                data,
+                setData,
+            })
+        } catch (error: unknown) {
+            console.log(JSON.stringify(error))
         }
     }
 

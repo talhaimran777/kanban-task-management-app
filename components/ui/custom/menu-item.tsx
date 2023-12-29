@@ -1,18 +1,18 @@
 import { ReactNode } from 'react'
 
 const MenuItem = ({
-  icon,
-  typography,
+    icon,
+    typography,
 }: {
-  icon: ReactNode
-  typography: ReactNode
+    icon: ReactNode
+    typography: ReactNode
 }) => {
-  return (
-    <>
-      {icon}
-      {typography}
-    </>
-  )
+    return (
+        <>
+            {icon}
+            {typography}
+        </>
+    )
 }
 
 export default MenuItem

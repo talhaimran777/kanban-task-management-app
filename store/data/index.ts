@@ -3,11 +3,11 @@ import { Data } from 'types/mock'
 import { create } from 'zustand'
 
 interface DataStore {
-  data: Data
+    data: Data
 }
 
 const useData = create<DataStore>((set) => ({
-  data: data,
+    data: data,
 }))
 
 export default useData

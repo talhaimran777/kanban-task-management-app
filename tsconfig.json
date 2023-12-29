@@ -1,39 +1,39 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "layout/*": ["./components/layout/*"],
-      "custom/*": ["./components/ui/custom/*"],
-      "ui/*": ["./components/ui/*"],
-      "providers/*": ["./components/providers/*"],
-      "forms/*": ["./components/forms/*"],
-      "schema/*": ["./schema/*"],
-      "images/*": ["./public/images/*"],
-      "utils/*": ["./utils/*"],
-      "mock/*": ["./mock/*"],
-      "types/*": ["./types/*"],
-      "assets/*": ["./assets/*"],
-      "store/*": ["./store/*"],
-      "others/*": ["./components/others/*"]
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+    "compilerOptions": {
+        "target": "es5",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "incremental": true,
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+        "paths": {
+            "layout/*": ["./components/layout/*"],
+            "custom/*": ["./components/ui/custom/*"],
+            "ui/*": ["./components/ui/*"],
+            "providers/*": ["./components/providers/*"],
+            "forms/*": ["./components/forms/*"],
+            "schema/*": ["./schema/*"],
+            "images/*": ["./public/images/*"],
+            "utils/*": ["./utils/*"],
+            "mock/*": ["./mock/*"],
+            "types/*": ["./types/*"],
+            "assets/*": ["./assets/*"],
+            "store/*": ["./store/*"],
+            "others/*": ["./components/others/*"]
+        }
+    },
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+    "exclude": ["node_modules"]
 }

@@ -4,19 +4,19 @@ import { useTheme } from 'next-themes'
 import { useEffect } from 'react'
 
 export function ThemeSetter({ children }: { children: React.ReactNode }) {
-  const { setTheme } = useTheme()
+    const { setTheme } = useTheme()
 
-  useEffect(() => {
-    if (
-      localStorage.theme === 'dark' ||
-      (!('theme' in localStorage) &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      setTheme('dark')
-    } else {
-      setTheme('light')
-    }
-  }, [setTheme])
+    useEffect(() => {
+        if (
+            localStorage.theme === 'dark' ||
+            (!('theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            setTheme('dark')
+        } else {
+            setTheme('light')
+        }
+    }, [setTheme])
 
-  return children
+    return children
 }

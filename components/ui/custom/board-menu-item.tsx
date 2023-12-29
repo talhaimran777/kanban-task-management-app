@@ -1,10 +1,14 @@
+'use client'
+
 import { Board } from 'types/mock'
 import clsx from 'clsx'
 import BoardIcon from 'assets/svg-icons/BoardIcon'
 import MenuItem from 'custom/menu-item'
 import Typography from 'custom/typography'
+import useData from 'store/data'
 
 const BoardMenuItem = ({ board }: { board: Board }) => {
+    const { data, setData } = useData()
     const getStyles = (isActive: boolean | undefined) => {
         const colors = {
             'bg-purple-primary text-white': !!isActive,
@@ -21,7 +25,10 @@ const BoardMenuItem = ({ board }: { board: Board }) => {
     }
 
     return (
-        <div className={clsx(getStyles(board.isActive))}>
+        <div
+            className={clsx(getStyles(board.id === data.selectedBoard))}
+            onClick={() => setData({ ...data, selectedBoard: board.id })}
+        >
             <MenuItem
                 icon={<BoardIcon />}
                 typography={

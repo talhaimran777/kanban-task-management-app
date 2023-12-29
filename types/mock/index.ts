@@ -7,7 +7,6 @@ export interface Board {
     id: string
     name: string
     columns?: Column[]
-    isActive?: boolean
 }
 
 export interface Column {

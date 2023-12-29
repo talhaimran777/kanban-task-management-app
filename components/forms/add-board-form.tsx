@@ -8,11 +8,13 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import addBoardFormSchema from 'schema/add-board-form-schema'
 import addBoardService from 'services/board/addBoardService'
 import useData from 'store/data'
+import useDialog from 'store/dialog'
 import { Form } from 'ui/form'
 import { z } from 'zod'
 
 const AddBoardForm = () => {
     const { data, setData } = useData()
+    const { setOpen, setType } = useDialog()
 
     const form = useForm<z.infer<typeof addBoardFormSchema>>({
         resolver: zodResolver(addBoardFormSchema),
@@ -40,6 +42,9 @@ const AddBoardForm = () => {
                 data,
                 setData,
             })
+
+            setOpen(false)
+            setType('')
         } catch (error: unknown) {
             console.log(JSON.stringify(error))
         }

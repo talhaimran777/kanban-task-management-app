@@ -16,7 +16,6 @@ const addBoardService = async ({
         const board: Board = {
             id: uuidv4(),
             name: values.boardName,
-            isActive: true,
         }
 
         const columns = values.columns
@@ -26,8 +25,9 @@ const addBoardService = async ({
         }
 
         const appData: Data = {
+            ...data,
             boards: [...data.boards, board],
-            selectedBoard: data?.selectedBoard ?? board.id,
+            selectedBoard: board.id,
         }
 
         setData(appData)

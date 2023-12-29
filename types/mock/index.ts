@@ -13,7 +13,7 @@ export interface Board {
 export interface Column {
   id: number
   name: string
-  tasks: Task[]
+  tasks?: Task[]
 }
 
 export type Status = 'Todo' | 'Doing' | 'Done'

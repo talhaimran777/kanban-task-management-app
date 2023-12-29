@@ -16,9 +16,9 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, fluid, size, text, ...props }, ref) => {
     const colors = {
-      primary: 'bg-purple-primary text-white hover:bg-purple-secondary',
+      primary: 'bg-purple-primary text-white hover:bg-purple-secondary focus-visible:ring-white focus-visible:ring-2 ring-offset-2',
       secondary:
-        'bg-[#EFEFF9] text-purple-primary hover:bg-[#D8D7F1] focus-visible:ring-purple-primary focus-visible:ring-2',
+        'bg-[#EFEFF9] text-purple-primary hover:bg-[#D8D7F1] focus-visible:ring-purple-primary focus-visible:ring-4 ring-offset-2',
       danger: 'bg-red-primary text-white hover:bg-red-secondary',
     }
 

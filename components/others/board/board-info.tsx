@@ -4,10 +4,13 @@ import Button from 'custom/button'
 import Typography from 'custom/typography'
 import BoardColumns from 'others/board/board-columns'
 import useData from 'store/data'
+import useDialog from 'store/dialog'
 import { Column } from 'types/mock'
 
 const BoardInfo = () => {
     const { selectedBoard, boards } = useData((state) => state.data)
+    const { setOpen, setType } = useDialog()
+
     const currentBoard = boards.find((board) => board.id === selectedBoard)
 
     // If no board found
@@ -40,7 +43,15 @@ const BoardInfo = () => {
                 size='large'
                 className='mb-6 text-grey-ternary'
             />
-            <Button text='Add New Column' variant='primary' size='large' />
+            <Button
+                text='Add New Column'
+                variant='primary'
+                size='large'
+                onClick={() => {
+                    setType('edit-board-dialog')
+                    setOpen(true)
+                }}
+            />
         </div>
     )
 }

@@ -1,6 +1,7 @@
 import Typography from 'custom/typography'
 import BoardColumn from 'others/board/board-column'
 import { Column } from 'types/mock'
+import ColumnCreator from 'others/board/column-creator'
 
 const BoardColumns = ({ columns }: { columns: Column[] }) => {
     return (
@@ -8,18 +9,7 @@ const BoardColumns = ({ columns }: { columns: Column[] }) => {
             {columns.map((column, index) => (
                 <BoardColumn column={column} key={index} />
             ))}
-            <div className='flex justify-center items-center min-w-[280px] dark:bg-dark-grey bg-white my-6 shadow-md sticky top-[24px] rounded-md'>
-                <div
-                    onClick={() => console.log('Create a new column')}
-                    className='cursor-pointer'
-                >
-                    <Typography
-                        text='+ new column'
-                        size='large'
-                        variant='heading'
-                    />
-                </div>
-            </div>
+            <ColumnCreator />
         </div>
     )
 }

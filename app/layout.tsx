@@ -7,6 +7,7 @@ import { ThemeProvider } from 'providers/theme-provider'
 import { ThemeSetter } from 'providers/theme-setter'
 import Sidebar from 'custom/sidebar'
 import ShowSidebar from 'custom/show-sidebar'
+import Dialogs from 'custom/dialog'
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -36,6 +37,7 @@ export default function RootLayout({
                                 <Sidebar />
                                 <ShowSidebar />
                                 {children}
+                                <Dialogs />
                             </div>
                         </div>
                     </ThemeSetter>

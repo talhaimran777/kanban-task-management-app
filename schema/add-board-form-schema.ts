@@ -1,7 +1,7 @@
 import * as z from 'zod'
 
-const addBoardFormSchema = z.object({
-    boardName: z.string().min(2, {
+const boardFormSchema = z.object({
+    name: z.string().min(2, {
         message: 'Board name must be at least 2 characters.',
     }),
     columns: z
@@ -15,4 +15,4 @@ const addBoardFormSchema = z.object({
         .optional(),
 })
 
-export default addBoardFormSchema
+export default boardFormSchema

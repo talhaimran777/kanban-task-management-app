@@ -1,7 +1,8 @@
+'use client'
+
 import BoardIcon from 'assets/svg-icons/BoardIcon'
 import MenuItem from 'custom/menu-item'
 import Typography from 'custom/typography'
-import AddBoardDialog from 'custom/dialog/add-board-dialog'
 import useDialog from 'store/dialog'
 
 const CreateBoardMenuItem = () => {
@@ -25,7 +26,6 @@ const CreateBoardMenuItem = () => {
                     />
                 }
             />
-            <AddBoardDialog />
         </div>
     )
 }

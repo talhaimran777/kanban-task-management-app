@@ -21,7 +21,6 @@ const Navbar = () => {
                     height={4}
                     width={4}
                 />
-                <AddTaskDialog />
             </div>
         </div>
     )

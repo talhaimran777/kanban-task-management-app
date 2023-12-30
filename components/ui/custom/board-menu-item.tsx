@@ -6,9 +6,12 @@ import BoardIcon from 'assets/svg-icons/BoardIcon'
 import MenuItem from 'custom/menu-item'
 import Typography from 'custom/typography'
 import useData from 'store/data'
+import useDialog from 'store/dialog'
 
 const BoardMenuItem = ({ board }: { board: Board }) => {
     const { data, setData } = useData()
+    const { setType, setOpen } = useDialog()
+
     const getStyles = (isActive: boolean | undefined) => {
         const colors = {
             'bg-purple-primary text-white': !!isActive,
@@ -27,7 +30,11 @@ const BoardMenuItem = ({ board }: { board: Board }) => {
     return (
         <div
             className={clsx(getStyles(board.id === data.selectedBoard))}
-            onClick={() => setData({ ...data, selectedBoard: board.id })}
+            onClick={() => {
+                setData({ ...data, selectedBoard: board.id })
+                setType('')
+                setOpen(false)
+            }}
         >
             <MenuItem
                 icon={<BoardIcon />}

@@ -5,20 +5,21 @@ import CrossIcon from 'assets/svg-icons/CrossIcon'
 import Button from 'custom/button'
 import FormInputGroup from 'custom/form/form-input-group'
 import { useFieldArray, useForm } from 'react-hook-form'
-import boardFormSchema from 'schema/add-board-form-schema'
-import addBoardService from 'services/board/addBoardService'
+import addBoardFormSchema from 'schema/add-board-form-schema'
+import editBoardService from 'services/board/editBoardService'
 import useDialog from 'store/dialog'
+import { Board } from 'types/mock'
 import { Form } from 'ui/form'
 import { z } from 'zod'
 
-const AddBoardForm = () => {
+const EditBoardForm = ({ board }: { board: Board }) => {
     const { setOpen, setType } = useDialog()
 
-    const form = useForm<z.infer<typeof boardFormSchema>>({
-        resolver: zodResolver(boardFormSchema),
+    const form = useForm<z.infer<typeof addBoardFormSchema>>({
+        resolver: zodResolver(addBoardFormSchema),
         defaultValues: {
-            name: '',
-            columns: [],
+            name: board.name,
+            columns: board.columns,
         },
     })
 
@@ -31,10 +32,11 @@ const AddBoardForm = () => {
         name: 'columns',
     })
 
-    const onSubmit = async (values: z.infer<typeof boardFormSchema>) => {
+    const onSubmit = async (values: z.infer<typeof addBoardFormSchema>) => {
         try {
-            await addBoardService({
+            await editBoardService({
                 values,
+                boardId: board.id,
             })
 
             setOpen(false)
@@ -93,11 +95,11 @@ const AddBoardForm = () => {
                     variant='primary'
                     size='small'
                     fluid={true}
-                    text='Create New Board'
+                    text='Save Changes'
                 />
             </form>
         </Form>
     )
 }
 
-export default AddBoardForm
+export default EditBoardForm

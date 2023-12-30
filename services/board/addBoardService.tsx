@@ -1,21 +1,20 @@
-import addBoardFormSchema from 'schema/add-board-form-schema'
+import boardFormSchema from 'schema/add-board-form-schema'
+import useData from 'store/data'
 import { Board, Column, Data } from 'types/mock'
 import { v4 as uuidv4 } from 'uuid'
 import { z } from 'zod'
 
 const addBoardService = async ({
     values,
-    data,
-    setData,
 }: {
-    values: z.infer<typeof addBoardFormSchema>
-    data: Data
-    setData: (type: Data) => void
+    values: z.infer<typeof boardFormSchema>
 }) => {
+    const { data, setData } = useData.getState()
+
     if (values) {
         const board: Board = {
             id: uuidv4(),
-            name: values.boardName,
+            name: values.name,
         }
 
         const columns = values.columns

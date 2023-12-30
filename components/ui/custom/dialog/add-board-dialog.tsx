@@ -21,7 +21,7 @@ const AddBoardDialog = () => {
                 setType('')
             }}
         >
-            <DialogContent className='p-6'>
+            <DialogContent className='p-6 max-h-[calc(100vh-5%)] overflow-auto'>
                 <DialogTitle className='flex justify-between items-center'>
                     <Typography
                         text='Add New Board'

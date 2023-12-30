@@ -24,7 +24,7 @@ const MobileMenuDialog = ({ boards }: { boards: Board[] }) => {
                 setType('')
             }}
         >
-            <DialogContent>
+            <DialogContent className='max-h-[calc(100vh-5%)] overflow-auto'>
                 <DialogTitle className='mx-6 mt-4'>
                     <Typography
                         text={`All Boards (${boards.length})`}

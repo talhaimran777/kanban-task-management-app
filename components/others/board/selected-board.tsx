@@ -4,13 +4,13 @@ import MobileMenuDialog from 'custom/dialog/mobile-menu-dialog'
 import Typography from 'custom/typography'
 import ChevronDownIcon from 'images/icon-chevron-down.svg'
 import Image from 'next/image'
-import useDataStore from 'store/data'
+import getCurrentBoard from 'services/board/getCurrentBoard'
+import useBoards from 'store/data/boards'
 import useDialog from 'store/dialog'
 
 const SelectedBoard = () => {
-    const { boards, selectedBoard: currentBoard } = useDataStore(
-        (state) => state.data
-    )
+    const currentBoard = getCurrentBoard();
+    const boards = useBoards(state => state.boards);
 
     const { setOpen, setType } = useDialog()
 
@@ -25,7 +25,7 @@ const SelectedBoard = () => {
             >
                 <Typography
                     text={
-                        boards.find((board) => board.id === currentBoard)
+                        boards.find((board) => board.id === currentBoard?.id)
                             ?.name || ('No Available Boards' as string)
                     }
                     size='large'

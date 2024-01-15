@@ -1,15 +1,16 @@
 'use client'
 
-import { Board } from 'types/mock'
-import clsx from 'clsx'
 import BoardIcon from 'assets/svg-icons/BoardIcon'
+import clsx from 'clsx'
 import MenuItem from 'custom/menu-item'
 import Typography from 'custom/typography'
-import useData from 'store/data'
+import makeBoardActive from 'services/board/makeBoardActive'
+import useActiveBoard from 'store/data/active-board'
 import useDialog from 'store/dialog'
+import { Board } from 'types/mock'
 
 const BoardMenuItem = ({ board }: { board: Board }) => {
-    const { data, setData } = useData()
+    const activeBoardId = useActiveBoard(state => state.activeBoardId);
     const { setType, setOpen } = useDialog()
 
     const getStyles = (isActive: boolean | undefined) => {
@@ -29,9 +30,9 @@ const BoardMenuItem = ({ board }: { board: Board }) => {
 
     return (
         <div
-            className={clsx(getStyles(board.id === data.selectedBoard))}
+            className={clsx(getStyles(board.id === activeBoardId))}
             onClick={() => {
-                setData({ ...data, selectedBoard: board.id })
+                makeBoardActive(board.id as string)
                 setType('')
                 setOpen(false)
             }}

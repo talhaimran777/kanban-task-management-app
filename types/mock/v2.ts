@@ -1,30 +1,33 @@
 export interface Data {
     boards: Board[]
-    selectedBoard?: string
+    columns: Column[]
+    tasks: Task[]
+    subtasks: Subtask[]
+    activeBoard: string
 }
 
 export interface Board {
-    id?: string
+    id: string
     name: string
-    columns?: Column[]
 }
 
 export interface Column {
-    id: number
+    id: string
     name: string
-    tasks?: Task[]
+    boardId: string
 }
 
 export interface Task {
-    id?: string
+    id: string
     title: string
     description: string
     status: string
-    subtasks?: SubTask[]
+    columnId: string
 }
 
-export interface SubTask {
+export interface Subtask {
     id: string
     title: string
     isCompleted: boolean
+    taskId: string
 }

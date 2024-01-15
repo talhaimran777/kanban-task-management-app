@@ -5,8 +5,11 @@ import CrossIcon from 'assets/svg-icons/CrossIcon'
 import Button from 'custom/button'
 import FormInputGroup from 'custom/form/form-input-group'
 import { useFieldArray, useForm } from 'react-hook-form'
-import boardFormSchema from 'schema/add-board-form-schema'
+import boardFormSchema from 'schema/board-form-schema'
 import addBoardService from 'services/board/addBoardService'
+import { createBoardService } from 'services/board/createBoardService'
+import makeBoardActive from 'services/board/makeBoardActive'
+import addColumnsService from 'services/column/addColumnsService'
 import useDialog from 'store/dialog'
 import { Form } from 'ui/form'
 import { z } from 'zod'
@@ -33,10 +36,12 @@ const AddBoardForm = () => {
 
     const onSubmit = async (values: z.infer<typeof boardFormSchema>) => {
         try {
-            await addBoardService({
-                values,
-            })
+            // values contains the board information & column names
+            const [board, columns] = createBoardService({ values })
 
+            addBoardService({ board })
+            addColumnsService({ columns })
+            makeBoardActive(board.id)
             setOpen(false)
             setType('')
         } catch (error: unknown) {
@@ -57,7 +62,7 @@ const AddBoardForm = () => {
                     control={form.control}
                 />
 
-                {columnsFields.map((field, index) => (
+                {columnsFields.map((_field, index) => (
                     <div
                         className='flex justify-between items-center gap-4'
                         key={index}

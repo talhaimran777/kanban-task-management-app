@@ -5,21 +5,21 @@ import CrossIcon from 'assets/svg-icons/CrossIcon'
 import Button from 'custom/button'
 import FormInputGroup from 'custom/form/form-input-group'
 import { useFieldArray, useForm } from 'react-hook-form'
-import addBoardFormSchema from 'schema/add-board-form-schema'
+import boardFormSchema from 'schema/board-form-schema'
 import editBoardService from 'services/board/editBoardService'
 import useDialog from 'store/dialog'
-import { Board } from 'types/mock'
+import { Board, Column } from 'types/mock/v2'
 import { Form } from 'ui/form'
 import { z } from 'zod'
 
-const EditBoardForm = ({ board }: { board: Board }) => {
+const EditBoardForm = ({ board, columns }: { board: Board, columns: Column[] }) => {
     const { setOpen, setType } = useDialog()
 
-    const form = useForm<z.infer<typeof addBoardFormSchema>>({
-        resolver: zodResolver(addBoardFormSchema),
+    const form = useForm<z.infer<typeof boardFormSchema>>({
+        resolver: zodResolver(boardFormSchema),
         defaultValues: {
             name: board.name,
-            columns: board.columns,
+            columns
         },
     })
 
@@ -32,15 +32,15 @@ const EditBoardForm = ({ board }: { board: Board }) => {
         name: 'columns',
     })
 
-    const onSubmit = async (values: z.infer<typeof addBoardFormSchema>) => {
+    const onSubmit = async (values: z.infer<typeof boardFormSchema>) => {
         try {
-            await editBoardService({
-                values,
-                boardId: board.id,
-            })
-
-            setOpen(false)
-            setType('')
+            // await editBoardService({
+            //     id: board.id as string,
+            //     updatedBoard: createBoardService({ values, generateNewId: false }),
+            // })
+            //
+            // setOpen(false)
+            // setType('')
         } catch (error: unknown) {
             console.log(JSON.stringify(error))
         }

@@ -8,9 +8,11 @@ import SidebarToggler from 'custom/sidebar-toggler'
 import useSidebar from 'store/sidebar'
 import { cn } from 'utils/cn'
 import clsx from 'clsx'
+import useBoards from 'store/data/boards'
 
 const Sidebar = () => {
-    const { boards } = useData((state) => state.data)
+    // const { boards } = useData((state) => state.data)
+    const boards = useBoards((state) => state.boards);
     const open = useSidebar((state) => state.open)
 
     const classes = {

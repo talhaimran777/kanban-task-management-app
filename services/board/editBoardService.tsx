@@ -1,32 +1,23 @@
-import boardFormSchema from 'schema/add-board-form-schema'
 import useData from 'store/data'
-import { Column, Data } from 'types/mock'
-import { z } from 'zod'
+import { Board, Data } from 'types/mock'
 
 const editBoardService = async ({
-    values,
-    boardId,
+    id,
+    updatedBoard,
 }: {
-    values: z.infer<typeof boardFormSchema>
-    boardId: string
+    id: string
+    updatedBoard: Board
 }) => {
     const { data, setData } = useData.getState()
 
-    const boards = data.boards.map((board) => {
-        if (board.id === boardId) {
-            board = {
-                ...board,
-                name: values.name,
-                columns: values.columns as Column[] | undefined,
-            }
-        }
-
-        return board
-    })
+    const boards = data.boards.map((board) =>
+        board.id === id ? updatedBoard : board
+    )
 
     const appData: Data = {
         ...data,
         boards: [...boards],
+        selectedBoard: id,
     }
 
     setData(appData)

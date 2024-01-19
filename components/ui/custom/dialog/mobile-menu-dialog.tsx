@@ -5,7 +5,7 @@ import CreateBoardMenuItem from 'custom/create-board-menu-item'
 import ThemeToggler from 'custom/theme-toggler'
 import Typography from 'custom/typography'
 import useDialog from 'store/dialog'
-import { Board } from 'types/mock'
+import { Board } from 'types/mock/v2'
 import {
     Dialog,
     DialogContent,

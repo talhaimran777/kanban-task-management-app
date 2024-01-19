@@ -1,7 +1,6 @@
-import Typography from 'custom/typography'
 import BoardColumn from 'others/board/board-column'
-import { Column } from 'types/mock'
 import ColumnCreator from 'others/board/column-creator'
+import { Column } from 'types/mock/v2'
 
 const BoardColumns = ({ columns }: { columns: Column[] }) => {
     return (

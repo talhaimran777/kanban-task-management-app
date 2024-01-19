@@ -1,6 +1,6 @@
 import React from 'react'
-import { Task } from 'types/mock'
 import Typography from 'custom/typography'
+import { Task } from 'types/mock/v2'
 
 const ColumnTask = ({ task }: { task: Task }) => {
     return (

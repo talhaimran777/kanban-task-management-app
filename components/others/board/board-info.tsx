@@ -3,15 +3,14 @@
 import Button from 'custom/button'
 import Typography from 'custom/typography'
 import BoardColumns from 'others/board/board-columns'
-import useData from 'store/data'
+import getCurrentBoard from 'services/board/get-current-board'
+import getColumnsByBoardId from 'services/column/get-columns-by-board-id'
 import useDialog from 'store/dialog'
-import { Column } from 'types/mock'
+import { Column } from 'types/mock/v2'
 
 const BoardInfo = () => {
-    const { selectedBoard, boards } = useData((state) => state.data)
     const { setOpen, setType } = useDialog()
-
-    const currentBoard = boards.find((board) => board.id === selectedBoard)
+    const currentBoard = getCurrentBoard()
 
     // If no board found
     if (!currentBoard) {
@@ -27,7 +26,7 @@ const BoardInfo = () => {
         )
     }
 
-    const boardColumns = currentBoard.columns as Column[]
+    const boardColumns = getColumnsByBoardId(currentBoard.id)
 
     // If board contains columns
     if (!!boardColumns?.length) {

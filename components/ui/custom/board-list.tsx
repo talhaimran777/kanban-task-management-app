@@ -1,5 +1,5 @@
-import { Board } from 'types/mock'
 import BoardMenuItem from 'custom/board-menu-item'
+import { Board } from 'types/mock/v2'
 
 const BoardList = ({ boards }: { boards: Board[] }) => {
     return boards.map((board, index) => (

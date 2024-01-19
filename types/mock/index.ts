@@ -1,32 +1,35 @@
+/**
+ * @deprecated
+ */
 export interface Data {
-    boards: Board[]
     selectedBoard?: string
 }
 
-export interface Board {
-    id: string
-    name: string
-    columns?: Column[]
-}
-
+/**
+ * @deprecated
+ */
 export interface Column {
     id: number
     name: string
     tasks?: Task[]
 }
 
-export type Status = 'Todo' | 'Doing' | 'Done'
-
+/**
+ * @deprecated
+ */
 export interface Task {
-    id: number
+    id?: string
     title: string
     description: string
-    status: Status
+    status: string
     subtasks?: SubTask[]
 }
 
+/**
+ * @deprecated
+ */
 export interface SubTask {
-    id: number
+    id: string
     title: string
     isCompleted: boolean
 }

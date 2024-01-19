@@ -6,7 +6,11 @@ import Button from 'custom/button'
 import FormInputGroup from 'custom/form/form-input-group'
 import Typography from 'custom/typography'
 import { useFieldArray, useForm } from 'react-hook-form'
-import addTaskFormSchema from 'schema/add-task-form-schema'
+import taskFormSchema from 'schema/task-form-schema'
+import getCurrentBoard from 'services/board/get-current-board'
+import getColumnsByBoardId from 'services/column/get-columns-by-board-id'
+import addTaskService from 'services/task/add-task-service'
+import { createTaskService } from 'services/task/create-task-service'
 import {
     Form,
     FormControl,
@@ -23,16 +27,15 @@ import {
     SelectValue,
 } from 'ui/select'
 import { z } from 'zod'
-import useData from 'store/data'
 
 const AddTaskForm = () => {
-    const form = useForm<z.infer<typeof addTaskFormSchema>>({
-        resolver: zodResolver(addTaskFormSchema),
+    const form = useForm<z.infer<typeof taskFormSchema>>({
+        resolver: zodResolver(taskFormSchema),
         defaultValues: {
-            name: '',
+            title: '',
             description: '',
             subtasks: [],
-            status: 'todo',
+            status: '',
         },
     })
 
@@ -45,14 +48,14 @@ const AddTaskForm = () => {
         name: 'subtasks',
     })
 
-    const data = useData((state) => state.data)
+    const selectedBoard = getCurrentBoard()
+    const boardColumns = getColumnsByBoardId(selectedBoard?.id as string)
 
-    function onSubmit(values: z.infer<typeof addTaskFormSchema>) {
+    function onSubmit(values: z.infer<typeof taskFormSchema>) {
         if (values) {
-            // Do something with the values
-            // and close dialog.
-            // document.querySelector('#close-create-task-dialog')?.click()
-            console.log(data)
+            addTaskService({
+                task: createTaskService({ values }),
+            })
         }
     }
 
@@ -63,8 +66,8 @@ const AddTaskForm = () => {
                 className='flex flex-col gap-6 mt-2'
             >
                 <FormInputGroup
-                    name='name'
-                    label='Name'
+                    name='title'
+                    label='Title'
                     placeholder='e.g. Take coffee break'
                     control={form.control}
                 />
@@ -84,7 +87,7 @@ const AddTaskForm = () => {
                     />
                 </FormLabel>
 
-                {subtaskFields.map((field, index) => (
+                {subtaskFields.map((_field, index) => (
                     <div
                         className='flex justify-between items-center gap-4'
                         key={index}
@@ -131,13 +134,15 @@ const AddTaskForm = () => {
                             >
                                 <FormControl className='dark:bg-dark-grey dark:border-grey-ternary dark:focus-visible:ring-purple-primary dark:focus:ring-purple-primary focus-visible:ring-purple-primary focus-visible:ring-offset-0 focus-visible:ring-2'>
                                     <SelectTrigger>
-                                        <SelectValue placeholder='Select a verified email to display' />
+                                        <SelectValue placeholder='Select status' />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent className='dark:bg-dark-grey'>
-                                    <SelectItem value='todo'>Todo</SelectItem>
-                                    <SelectItem value='doing'>Doing</SelectItem>
-                                    <SelectItem value='done'>Done</SelectItem>
+                                    {boardColumns?.map((col) => (
+                                        <SelectItem value={col.name}>
+                                            {col.name}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                             <FormMessage />

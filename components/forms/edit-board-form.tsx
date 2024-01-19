@@ -7,6 +7,7 @@ import FormInputGroup from 'custom/form/form-input-group'
 import { useFieldArray, useForm } from 'react-hook-form'
 import boardFormSchema from 'schema/board-form-schema'
 import editBoardService from 'services/board/editBoardService'
+import editColumnsService from 'services/column/editColumnsService'
 import useDialog from 'store/dialog'
 import { Board, Column } from 'types/mock/v2'
 import { Form } from 'ui/form'
@@ -14,12 +15,11 @@ import { z } from 'zod'
 
 const EditBoardForm = ({ board, columns }: { board: Board, columns: Column[] }) => {
     const { setOpen, setType } = useDialog()
-
     const form = useForm<z.infer<typeof boardFormSchema>>({
         resolver: zodResolver(boardFormSchema),
         defaultValues: {
             name: board.name,
-            columns
+            columns,
         },
     })
 
@@ -34,13 +34,30 @@ const EditBoardForm = ({ board, columns }: { board: Board, columns: Column[] }) 
 
     const onSubmit = async (values: z.infer<typeof boardFormSchema>) => {
         try {
-            // await editBoardService({
-            //     id: board.id as string,
-            //     updatedBoard: createBoardService({ values, generateNewId: false }),
-            // })
-            //
-            // setOpen(false)
-            // setType('')
+            // TODO: extract this to a service
+            const boardToUpdate: Board = {
+                id: board.id,
+                name: values.name,
+            }
+
+            editBoardService(boardToUpdate)
+
+            const columns: Column[] = [];
+
+            // TODO: extract this to a service
+            if (values.columns && values.columns.length > 0) {
+                values.columns.forEach((column) => {
+                    columns.push({
+                        id: column.id,
+                        name: column.name,
+                        boardId: board.id,
+                    })
+                })
+            }
+
+            editColumnsService(columns, board.id)
+            setOpen(false)
+            setType('')
         } catch (error: unknown) {
             console.log(JSON.stringify(error))
         }
@@ -59,7 +76,7 @@ const EditBoardForm = ({ board, columns }: { board: Board, columns: Column[] }) 
                     control={form.control}
                 />
 
-                {columnsFields.map((field, index) => (
+                {columnsFields.map((_field, index) => (
                     <div
                         className='flex justify-between items-center gap-4'
                         key={index}
@@ -87,7 +104,7 @@ const EditBoardForm = ({ board, columns }: { board: Board, columns: Column[] }) 
                     size='small'
                     fluid={true}
                     text='+ Add New Column'
-                    onClick={() => append({ name: '' })}
+                    onClick={() => append({ id: "", name: '' })}
                 />
 
                 <Button

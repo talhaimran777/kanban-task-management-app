@@ -7,6 +7,8 @@ const boardFormSchema = z.object({
     columns: z
         .array(
             z.object({
+                id: z
+                    .string(),
                 name: z
                     .string()
                     .min(2, 'Column name must contains atleast 2 characters'),

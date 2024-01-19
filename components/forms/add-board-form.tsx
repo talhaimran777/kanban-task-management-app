@@ -90,7 +90,7 @@ const AddBoardForm = () => {
                     size='small'
                     fluid={true}
                     text='+ Add New Column'
-                    onClick={() => append({ name: '' })}
+                    onClick={() => append({ id: '', name: '' })}
                 />
 
                 <Button

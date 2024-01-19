@@ -1,6 +1,4 @@
-import boardFormSchema from 'schema/board-form-schema'
 import { Column } from 'types/mock/v2'
-import { z } from 'zod'
 import { v4 as uuidv4 } from 'uuid'
 
 const createColumnService = ({

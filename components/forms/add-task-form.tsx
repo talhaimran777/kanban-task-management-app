@@ -139,7 +139,7 @@ const AddTaskForm = () => {
                                 </FormControl>
                                 <SelectContent className='dark:bg-dark-grey'>
                                     {boardColumns?.map((col) => (
-                                        <SelectItem value={col.name}>
+                                        <SelectItem key={col.id} value={col.name}>
                                             {col.name}
                                         </SelectItem>
                                     ))}

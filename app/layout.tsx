@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
-import Navbar from 'ui/custom/navbar'
+import Navbar from 'src/components/ui/custom/navbar'
 
-import { ThemeProvider } from 'providers/theme-provider'
-import { ThemeSetter } from 'providers/theme-setter'
-import Sidebar from 'custom/sidebar'
-import ShowSidebar from 'custom/show-sidebar'
-import Dialogs from 'custom/dialog'
+import { ThemeProvider } from 'src/components/providers/theme-provider'
+import { ThemeSetter } from 'src/components/providers/theme-setter'
+import Sidebar from 'src/components/ui/custom/sidebar'
+import ShowSidebar from 'src/components/ui/custom/show-sidebar'
+import Dialogs from 'src/components/ui/custom/dialog'
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
 

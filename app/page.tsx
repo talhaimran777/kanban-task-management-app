@@ -1,8 +1,8 @@
 'use client'
 
-import BoardInfo from 'others/board/board-info'
-import useSidebar from 'store/sidebar'
-import { cn } from 'utils/cn'
+import BoardInfo from 'src/components/others/board/board-info'
+import useSidebar from 'src/store/sidebar'
+import { cn } from 'src/utils/cn'
 import clsx from 'clsx'
 
 export default function Home() {

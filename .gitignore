@@ -46,3 +46,5 @@ package-lock.json
 
 # notes
 notes.txt
+
+convex/_generated/

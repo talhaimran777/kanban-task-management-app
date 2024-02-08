@@ -1,13 +1,10 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
-import Navbar from 'src/components/ui/custom/navbar'
 
+import { ClerkProvider } from '@clerk/nextjs'
 import { ThemeProvider } from 'src/components/providers/theme-provider'
 import { ThemeSetter } from 'src/components/providers/theme-setter'
-import Sidebar from 'src/components/ui/custom/sidebar'
-import ShowSidebar from 'src/components/ui/custom/show-sidebar'
-import Dialogs from 'src/components/ui/custom/dialog'
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -22,27 +19,19 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang='en'>
-            <body className={plusJakartaSans.className}>
-                <ThemeProvider
-                    attribute='class'
-                    defaultTheme='system'
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    <ThemeSetter>
-                        <div className='flex flex-col h-screen dark:bg-very-dark-grey'>
-                            <Navbar />
-                            <div className='flex justify-between flex-1'>
-                                <Sidebar />
-                                <ShowSidebar />
-                                {children}
-                                <Dialogs />
-                            </div>
-                        </div>
-                    </ThemeSetter>
-                </ThemeProvider>
-            </body>
-        </html>
+        <ClerkProvider>
+            <html lang='en'>
+                <body className={plusJakartaSans.className}>
+                    <ThemeProvider
+                        attribute='class'
+                        defaultTheme='system'
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        <ThemeSetter>{children}</ThemeSetter>
+                    </ThemeProvider>
+                </body>
+            </html>
+        </ClerkProvider>
     )
 }

@@ -1,5 +1,5 @@
 import useTask from 'src/store/data/tasks'
-import { Column, Data, Task, Board } from 'src/types/mock'
+import { Task } from 'src/types/mock'
 
 /**
  * @description Service to add a task to the store

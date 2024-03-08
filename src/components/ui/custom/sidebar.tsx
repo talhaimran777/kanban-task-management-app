@@ -8,10 +8,11 @@ import useSidebar from 'src/store/sidebar'
 import { cn } from 'src/utils/cn'
 import clsx from 'clsx'
 import useBoards from 'src/store/data/boards'
+import useStore from 'src/store/data/hooks'
 
 const Sidebar = () => {
     // const { boards } = useData((state) => state.data)
-    const boards = useBoards((state) => state.boards)
+    const boards = useStore(useBoards, (state) => state.boards)
     const open = useSidebar((state) => state.open)
 
     const classes = {
@@ -23,7 +24,7 @@ const Sidebar = () => {
     return (
         <div className={cn(clsx(classes))}>
             <div className='flex-1'>
-                <BoardList boards={boards} />
+                {boards && <BoardList boards={boards} />}
                 <CreateBoardMenuItem />
             </div>
             <ThemeToggler />

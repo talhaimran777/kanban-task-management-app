@@ -7,16 +7,9 @@ import { Board } from 'src/types/mock'
  * @param {Board} board - The board object that needs to be updated
  */
 const editBoardService = (board: Board) => {
-    const { boards: appBoards, setBoards } = useBoards.getState()
+    const { boards, setBoards } = useBoards.getState()
 
-    const updatedBoards = appBoards.map((appBoard) => {
-        if (appBoard.id === board.id) {
-            return board
-        }
-        return appBoard
-    })
-
-    setBoards(updatedBoards)
+    setBoards({ ...boards, [board.id]: board })
 }
 
 export default editBoardService

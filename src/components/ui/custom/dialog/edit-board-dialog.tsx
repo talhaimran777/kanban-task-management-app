@@ -2,7 +2,7 @@
 
 import Typography from 'src/components/ui/custom/typography'
 import EditBoardForm from 'src/components/forms/edit-board-form'
-import getCurrentBoard from 'src/services/board/get-current-board'
+import useCurrentBoard from 'src/services/board/get-current-board'
 import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
 import useDialog from 'src/store/dialog'
 import { Board } from 'src/types/mock'
@@ -15,7 +15,7 @@ import {
 
 const EditBoardDialog = () => {
     const { open, type, setOpen, setType } = useDialog()
-    const board = getCurrentBoard()
+    const board = useCurrentBoard()
     const boardColumns = getColumnsByBoardId(board?.id || '')
 
     return (
@@ -37,7 +37,7 @@ const EditBoardDialog = () => {
                 </DialogTitle>
                 <DialogDescription>
                     <EditBoardForm
-                        board={getCurrentBoard() as Board}
+                        board={board as Board}
                         columns={boardColumns}
                     />
                 </DialogDescription>

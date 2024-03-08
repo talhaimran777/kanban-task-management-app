@@ -1,9 +1,17 @@
-export interface Data {
-    boards: Board[]
-    columns: Column[]
-    tasks: Task[]
-    subtasks: Subtask[]
-    activeBoard: string
+export interface Boards {
+    [id: string]: Board
+}
+
+export interface Columns {
+    [id: string]: Column
+}
+
+export interface Tasks {
+    [id: string]: Task
+}
+
+export interface Subtasks {
+    [id: string]: Subtask
 }
 
 export interface Board {
@@ -21,7 +29,6 @@ export interface Task {
     id: string
     title: string
     description: string
-    status: string
     columnId: string
 }
 

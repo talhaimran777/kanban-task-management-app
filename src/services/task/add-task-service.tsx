@@ -1,33 +1,14 @@
+import useTask from 'src/store/data/tasks'
 import { Column, Data, Task, Board } from 'src/types/mock'
 
+/**
+ * @description Service to add a task to the store
+ * @param {Task} task - The task to add
+ */
 const addTaskService = async ({ task }: { task: Task }) => {
-    // const { data, setData } = useData.getState()
-    //
-    // const updatedBoards = data?.boards.map((board: Board) => {
-    //     if (board.id === data.selectedBoard) {
-    //         const selectedColumn = board.columns?.find(
-    //             (col: Column) => col.name === task.status
-    //         ) as Column
-    //
-    //         let columnsTasks: Task[] = []
-    //
-    //         if (!!selectedColumn.tasks?.length) {
-    //             columnsTasks = selectedColumn?.tasks
-    //         } else {
-    //             columnsTasks = []
-    //         }
-    //
-    //         selectedColumn['tasks'] = [...columnsTasks, task]
-    //     }
-    //     return board
-    // }) as Board[]
-    //
-    // const appData: Data = {
-    //     ...data,
-    //     boards: [...updatedBoards],
-    // }
-    //
-    // setData(appData)
+    const { tasks, setTasks } = useTask.getState()
+
+    setTasks({ ...tasks, [task.id]: task })
 }
 
 export default addTaskService

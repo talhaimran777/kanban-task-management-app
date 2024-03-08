@@ -7,7 +7,7 @@ import FormInputGroup from 'src/components/ui/custom/form/form-input-group'
 import Typography from 'src/components/ui/custom/typography'
 import { useFieldArray, useForm } from 'react-hook-form'
 import taskFormSchema from 'src/schema/task-form-schema'
-import getCurrentBoard from 'src/services/board/get-current-board'
+import useCurrentBoard from 'src/services/board/get-current-board'
 import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
 import addTaskService from 'src/services/task/add-task-service'
 import { createTaskService } from 'src/services/task/create-task-service'
@@ -27,8 +27,12 @@ import {
     SelectValue,
 } from 'src/components/ui/select'
 import { z } from 'zod'
+import useSubTask from 'src/store/data/subtasks'
+import useDialog from 'src/store/dialog'
 
 const AddTaskForm = () => {
+    const { setOpen, setType } = useDialog()
+
     const form = useForm<z.infer<typeof taskFormSchema>>({
         resolver: zodResolver(taskFormSchema),
         defaultValues: {
@@ -48,14 +52,25 @@ const AddTaskForm = () => {
         name: 'subtasks',
     })
 
-    const selectedBoard = getCurrentBoard()
+    const selectedBoard = useCurrentBoard()
     const columns = getColumnsByBoardId(selectedBoard?.id as string)
 
     function onSubmit(values: z.infer<typeof taskFormSchema>) {
         if (values) {
-            addTaskService({
-                task: createTaskService({ values }),
+            const [task, subtasks] = createTaskService({ values })
+
+            // Add newly created task to the board
+            addTaskService({ task })
+
+            // TODO: Extract this to a service
+            subtasks.forEach((subtask) => {
+                const { subtasks, setSubtasks } = useSubTask.getState()
+
+                setSubtasks({ ...subtasks, [subtask.id]: subtask })
             })
+
+            setOpen(false)
+            setType('')
         }
     }
 
@@ -129,7 +144,9 @@ const AddTaskForm = () => {
                                 />
                             </FormLabel>
                             <Select
-                                onValueChange={field.onChange}
+                                onValueChange={(value) => {
+                                    field.onChange(value)
+                                }}
                                 defaultValue={field.value}
                             >
                                 <FormControl className='dark:bg-dark-grey dark:border-grey-ternary dark:focus-visible:ring-purple-primary dark:focus:ring-purple-primary focus-visible:ring-purple-primary focus-visible:ring-offset-0 focus-visible:ring-2'>
@@ -139,7 +156,7 @@ const AddTaskForm = () => {
                                 </FormControl>
                                 <SelectContent className='dark:bg-dark-grey'>
                                     {columns.map((col) => (
-                                        <SelectItem key={col.id} value={col.name}>
+                                        <SelectItem key={col.id} value={col.id}>
                                             {col.name}
                                         </SelectItem>
                                     ))}

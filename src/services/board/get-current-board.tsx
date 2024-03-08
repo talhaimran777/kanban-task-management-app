@@ -1,17 +1,25 @@
 import useActiveBoard from 'src/store/data/active-board'
 import useBoards from 'src/store/data/boards'
+import useStore from 'src/store/data/hooks'
 import { Board } from 'src/types/mock'
 
 /**
  * @description Retrieves the current active board
  * @returns {Board | undefined} The current active board if found, or `undefined`
  */
-const getCurrentBoard = (): Board | undefined => {
-    const boards = useBoards.getState().boards
-    const activeBoardId = useActiveBoard.getState().activeBoardId
-    const currentBoard = boards.find((board) => board.id === activeBoardId)
+const useCurrentBoard = (): Board | undefined => {
+    const boards = useStore(useBoards, (state) => state.boards)
+    const activeBoardId = useActiveBoard((state) => state.activeBoardId)
 
-    return currentBoard
+    if (!activeBoardId) {
+        return undefined
+    }
+
+    if (!boards) {
+        return undefined
+    }
+
+    return boards[activeBoardId]
 }
 
-export default getCurrentBoard
+export default useCurrentBoard

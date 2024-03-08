@@ -9,7 +9,7 @@ import boardFormSchema from 'src/schema/board-form-schema'
 import addBoardService from 'src/services/board/add-board-service'
 import { createBoardService } from 'src/services/board/create-board-service'
 import makeBoardActive from 'src/services/board/make-board-active'
-import addColumnsService from 'src/services/column/add-columns-service'
+import addColumnService from 'src/services/column/add-columns-service'
 import useDialog from 'src/store/dialog'
 import { Form } from 'src/components/ui/form'
 import { z } from 'zod'
@@ -36,12 +36,18 @@ const AddBoardForm = () => {
 
     const onSubmit = async (values: z.infer<typeof boardFormSchema>) => {
         try {
-            // values contains the board information & column names
+            // Create board and its associated columns if any
             const [board, columns] = createBoardService(values)
 
+            // Add board
             addBoardService(board)
-            addColumnsService(columns)
+
+            // Add columns
+            columns.forEach((column) => addColumnService(column))
+
+            // Make newly created board as active
             makeBoardActive(board.id)
+
             setOpen(false)
             setType('')
         } catch (error: unknown) {

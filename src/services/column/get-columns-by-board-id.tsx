@@ -9,9 +9,7 @@ import { Column } from 'src/types/mock'
  */
 const getColumnsByBoardId = (boardId: string): Column[] => {
     const columns = useColumns.getState().columns
-    const column = columns.filter((column) => column.boardId === boardId)
-
-    return column
+    return Object.values(columns).filter((column) => column.boardId === boardId)
 }
 
 export default getColumnsByBoardId

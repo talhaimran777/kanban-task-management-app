@@ -1,5 +1,5 @@
 import taskFormSchema from 'src/schema/task-form-schema'
-import { Task } from 'src/types/mock'
+import { Subtask, Task } from 'src/types/mock'
 import { v4 as uuidv4 } from 'uuid'
 import { z } from 'zod'
 
@@ -7,35 +7,22 @@ export const createTaskService = ({
     values,
 }: {
     values: z.infer<typeof taskFormSchema>
-}): Task => {
-    return {
+}): [Task, Subtask[]] => {
+    const task: Task = {
         id: uuidv4(),
         title: values.title,
         description: values.description,
-        status: values.status,
-        columnId: '',
+        columnId: values.status, // values.status will contain the columnId
     }
-    // const task: Task = {
-    //     title: values.title,
-    //     description: values.description,
-    //     status: values.status,
-    // }
-    //
-    // if (generateNewId) {
-    //     task.id = uuidv4()
-    // }
-    //
-    // const subtasks: Subtask[] = []
-    //
-    // if (values.subtasks) {
-    //     values.subtasks.forEach((subtask) => {
-    //         subtasks.push({
-    //             id: uuidv4(),
-    //             title: subtask.name,
-    //             isCompleted: false,
-    //         })
-    //     })
-    // }
-    //
-    // return task
+
+    // TODO: Extract this to a service, createSubtaskService that will list of subtask titles & taskId
+    const subtasks =
+        values.subtasks?.map((subtask) => ({
+            id: uuidv4(),
+            title: subtask.name,
+            isCompleted: false,
+            taskId: task.id,
+        })) ?? []
+
+    return [task, subtasks]
 }

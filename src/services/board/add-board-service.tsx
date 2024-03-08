@@ -9,7 +9,7 @@ import { Board } from 'src/types/mock'
 const addBoardService = (board: Board) => {
     const { boards, setBoards } = useBoards.getState()
 
-    setBoards([...boards, board])
+    setBoards({ ...boards, [board.id]: board })
 }
 
 export default addBoardService

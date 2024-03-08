@@ -1,15 +1,23 @@
-import { Task } from 'src/types/mock'
+import { Tasks } from 'src/types/mock'
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 interface TaskStore {
-    tasks: Task[]
-    setTasks: (tasks: Task[]) => void
+    tasks: Tasks
+    setTasks: (tasks: Tasks) => void
 }
 
-const useTask = create<TaskStore>((set) => ({
-    tasks: [],
-    setTasks: (tasks: Task[]) =>
-        set((state) => ({ ...state, tasks: [...tasks] })),
-}))
+const useTasks = create<TaskStore>()(
+    persist(
+        (set) => ({
+            tasks: {},
+            setTasks: (tasks: Tasks) =>
+                set((state) => ({ ...state, tasks: { ...tasks } })),
+        }),
+        {
+            name: 'tasks-storage',
+        }
+    )
+)
 
-export default useTask
+export default useTasks

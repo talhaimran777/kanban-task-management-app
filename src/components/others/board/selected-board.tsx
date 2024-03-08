@@ -4,13 +4,19 @@ import MobileMenuDialog from 'src/components/ui/custom/dialog/mobile-menu-dialog
 import Typography from 'src/components/ui/custom/typography'
 import ChevronDownIcon from 'images/icon-chevron-down.svg'
 import Image from 'next/image'
-import getCurrentBoard from 'src/services/board/get-current-board'
+import useCurrentBoard from 'src/services/board/get-current-board'
 import useBoards from 'src/store/data/boards'
 import useDialog from 'src/store/dialog'
+import useStore from 'src/store/data/hooks'
+import makeBoardActive from 'src/services/board/make-board-active'
 
 const SelectedBoard = () => {
-    const currentBoard = getCurrentBoard()
-    const boards = useBoards((state) => state.boards)
+    const currentBoard = useCurrentBoard()
+    const boards = useStore(useBoards, (state) => state.boards)
+
+    if (!currentBoard && !!boards) {
+        makeBoardActive(boards[Object.keys(boards)[0]].id)
+    }
 
     const { setOpen, setType } = useDialog()
 
@@ -25,8 +31,7 @@ const SelectedBoard = () => {
             >
                 <Typography
                     text={
-                        boards.find((board) => board.id === currentBoard?.id)
-                            ?.name || ('No Available Boards' as string)
+                        currentBoard?.name ?? ('No Available Boards' as string)
                     }
                     size='large'
                     variant='heading'
@@ -38,7 +43,7 @@ const SelectedBoard = () => {
                     width={12}
                 />
             </div>
-            <MobileMenuDialog boards={boards} />
+            {boards && <MobileMenuDialog boards={boards} />}
         </div>
     )
 }

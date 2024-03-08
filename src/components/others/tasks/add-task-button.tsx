@@ -3,14 +3,14 @@
 import clsx from 'clsx'
 import AddTaskIcon from 'images/icon-add-task-mobile.svg'
 import Image from 'next/image'
-import getCurrentBoard from 'src/services/board/get-current-board'
+import useCurrentBoard from 'src/services/board/get-current-board'
 import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
 import useDialog from 'src/store/dialog'
 import { cn } from 'src/utils/cn'
 
 const AddTaskButton = () => {
     const { setOpen, setType } = useDialog()
-    const currentBoard = getCurrentBoard()
+    const currentBoard = useCurrentBoard()
     const boardColumns = getColumnsByBoardId(currentBoard?.id || '')
 
     let disabled = false

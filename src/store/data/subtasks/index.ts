@@ -1,15 +1,23 @@
-import { Subtask } from 'src/types/mock'
+import { Subtasks } from 'src/types/mock'
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 interface SubtaskStore {
-    subtasks: Subtask[]
-    setSubtasks: (subtasks: Subtask[]) => void
+    subtasks: Subtasks
+    setSubtasks: (subtasks: Subtasks) => void
 }
 
-const useSubTask = create<SubtaskStore>((set) => ({
-    subtasks: [],
-    setSubtasks: (subtasks: Subtask[]) =>
-        set((state) => ({ ...state, subtasks: [...subtasks] })),
-}))
+const useSubTask = create<SubtaskStore>()(
+    persist(
+        (set) => ({
+            subtasks: {},
+            setSubtasks: (subtasks: Subtasks) =>
+                set((state) => ({ ...state, subtasks: { ...subtasks } })),
+        }),
+        {
+            name: 'subtasks-storage',
+        }
+    )
+)
 
 export default useSubTask

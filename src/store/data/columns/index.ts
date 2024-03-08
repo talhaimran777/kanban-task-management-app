@@ -1,15 +1,23 @@
-import { Column } from 'src/types/mock'
+import { Columns } from 'src/types/mock'
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 interface ColumnStore {
-    columns: Column[]
-    setColumns: (columns: Column[]) => void
+    columns: Columns
+    setColumns: (columns: Columns) => void
 }
 
-const useColumns = create<ColumnStore>((set) => ({
-    columns: [],
-    setColumns: (columns: Column[]) =>
-        set((state) => ({ ...state, columns: [...columns] })),
-}))
+const useColumns = create<ColumnStore>()(
+    persist(
+        (set) => ({
+            columns: {},
+            setColumns: (columns: Columns) =>
+                set((state) => ({ ...state, columns: { ...columns } })),
+        }),
+        {
+            name: 'columns-storage',
+        }
+    )
+)
 
 export default useColumns

@@ -1,16 +1,18 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useFieldArray, useForm } from 'react-hook-form'
 import CrossIcon from 'src/assets/svg-icons/CrossIcon'
 import Button from 'src/components/ui/custom/button'
 import FormInputGroup from 'src/components/ui/custom/form/form-input-group'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { Form } from 'src/components/ui/form'
 import boardFormSchema from 'src/schema/board-form-schema'
 import editBoardService from 'src/services/board/edit-board-service'
-import editColumnsService from 'src/services/column/edit-columns-service'
+import addColumnService from 'src/services/column/add-columns-service'
+import createColumnService from 'src/services/column/create-column-service'
+import editColumnService from 'src/services/column/edit-columns-service'
 import useDialog from 'src/store/dialog'
 import { Board, Column } from 'src/types/mock'
-import { Form } from 'src/components/ui/form'
 import { z } from 'zod'
 
 const EditBoardForm = ({
@@ -40,7 +42,7 @@ const EditBoardForm = ({
 
     const onSubmit = async (values: z.infer<typeof boardFormSchema>) => {
         try {
-            // TODO: extract this to a service
+            // TODO: Extract this to a service
             const boardToUpdate: Board = {
                 id: board.id,
                 name: values.name,
@@ -48,20 +50,33 @@ const EditBoardForm = ({
 
             editBoardService(boardToUpdate)
 
-            const columns: Column[] = []
-
-            // TODO: extract this to a service
-            if (values.columns && values.columns.length > 0) {
+            if (values.columns) {
+                // TODO: Extract this to a service
+                // TODO: if values.columns length is less than the columns for the current board
+                // then delete the extra columns
                 values.columns.forEach((column) => {
-                    columns.push({
-                        id: column.id,
-                        name: column.name,
-                        boardId: board.id,
-                    })
+                    if (column.id) {
+                        // Existing column
+                        const existingColumn: Column = {
+                            id: column.id,
+                            name: column.name,
+                            boardId: board.id,
+                        }
+
+                        editColumnService(existingColumn)
+                    } else {
+                        // New column
+                        const newColumn = createColumnService(
+                            column.name,
+                            board.id
+                        )
+
+                        // Adds newly created column to the global state
+                        addColumnService(newColumn)
+                    }
                 })
             }
 
-            editColumnsService(columns, board.id)
             setOpen(false)
             setType('')
         } catch (error: unknown) {

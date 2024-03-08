@@ -2,14 +2,14 @@ import useColumns from 'src/store/data/columns'
 import { Column } from 'src/types/mock'
 
 /**
- * @description Adds new columns to the existing columns
+ * @description Adds new column to the existing columns
  *
- * @param {Column[]} columns - The new columns to be added
+ * @param {Column} column - The new column to be added
  */
-const addColumnsService = (columns: Column[]) => {
-    const { columns: oldColumns, setColumns } = useColumns.getState()
+const addColumnService = (column: Column) => {
+    const { columns, setColumns } = useColumns.getState()
 
-    setColumns([...oldColumns, ...columns])
+    setColumns({ ...columns, [column.id]: column })
 }
 
-export default addColumnsService
+export default addColumnService

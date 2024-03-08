@@ -7,7 +7,7 @@ interface SidebarState {
 
 const useSidebar = create<SidebarState>((set) => ({
     open: true,
-    setOpen: (open: boolean) => set((state) => ({ open })),
+    setOpen: (open: boolean) => set((_state) => ({ open })),
 }))
 
 export default useSidebar

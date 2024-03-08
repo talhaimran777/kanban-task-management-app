@@ -1,4 +1,3 @@
-import AddTaskDialog from 'src/components/ui/custom/dialog/add-task-dialog'
 import VerticalEllipsisIcon from 'images/icon-vertical-ellipsis.svg'
 import Logo from 'images/logo-mobile.svg'
 import Image from 'next/image'

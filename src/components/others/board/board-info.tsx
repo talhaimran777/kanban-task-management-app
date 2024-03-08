@@ -29,7 +29,7 @@ const BoardInfo = () => {
     const boardColumns = getColumnsByBoardId(currentBoard.id)
 
     // If board contains columns
-    if (!!boardColumns?.length) {
+    if (!!boardColumns.length) {
         return <BoardColumns columns={boardColumns as Column[]} />
     }
 

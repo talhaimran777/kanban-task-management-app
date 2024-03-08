@@ -15,7 +15,12 @@ const SelectedBoard = () => {
     const boards = useStore(useBoards, (state) => state.boards)
 
     if (!currentBoard && !!boards) {
-        makeBoardActive(boards[Object.keys(boards)[0]].id)
+        const boardKeys = Object.keys(boards)
+
+        if (boardKeys.length > 0) {
+            // Making the first board active, if no board is active
+            makeBoardActive(boardKeys[0])
+        }
     }
 
     const { setOpen, setType } = useDialog()

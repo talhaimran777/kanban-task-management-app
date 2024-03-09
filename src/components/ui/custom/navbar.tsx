@@ -1,4 +1,4 @@
-import VerticalEllipsisIcon from 'images/icon-vertical-ellipsis.svg'
+// import VerticalEllipsisIcon from 'images/icon-vertical-ellipsis.svg'
 import Logo from 'images/logo-mobile.svg'
 import Image from 'next/image'
 import SelectedBoard from 'src/components/others/board/selected-board'
@@ -14,12 +14,12 @@ const Navbar = () => {
             </div>
             <div className='flex justify-between items-center gap-4'>
                 <AddTaskButton />
-                <Image
+                {/* <Image
                     src={VerticalEllipsisIcon}
                     alt='Vertical Ellipsis Icon'
                     height={4}
                     width={4}
-                />
+                /> */}
             </div>
         </div>
     )

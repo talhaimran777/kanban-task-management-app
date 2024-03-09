@@ -2,7 +2,7 @@ import Typography from 'src/components/ui/custom/typography'
 import { Column, Tasks } from 'src/types/mock'
 import ColumnTasks from '../tasks/column-tasks'
 import useTask from 'src/store/data/tasks'
-import useStore from 'src/store/data/hooks'
+import { useStore } from 'src/store/data/hooks'
 
 // TODO: Extract this to a service file
 const getTasksByColumnId = (tasks: Tasks, columnId: string) => {

@@ -1,6 +1,6 @@
 import useActiveBoard from 'src/store/data/active-board'
 import useBoards from 'src/store/data/boards'
-import useStore from 'src/store/data/hooks'
+import { useStore } from 'src/store/data/hooks'
 import { Board } from 'src/types/mock'
 
 /**

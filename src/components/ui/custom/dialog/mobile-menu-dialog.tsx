@@ -19,8 +19,8 @@ const MobileMenuDialog = ({ boards }: { boards: Boards }) => {
     return (
         <Dialog
             open={open && type === 'mobile-menu-dialog'}
-            onOpenChange={() => {
-                setOpen(false)
+            onOpenChange={(open) => {
+                setOpen(open)
                 setType('')
             }}
         >

@@ -1,9 +1,9 @@
 'use client'
 
+import clsx from 'clsx'
 import BoardInfo from 'src/components/others/board/board-info'
 import useSidebar from 'src/store/sidebar'
 import { cn } from 'src/utils/cn'
-import clsx from 'clsx'
 
 export default function Home() {
     const open = useSidebar((state) => state.open)

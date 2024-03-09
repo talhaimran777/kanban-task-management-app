@@ -1,19 +1,24 @@
 'use client'
 
-import BoardList from 'src/components/ui/custom/board-list'
+import clsx from 'clsx'
+import { useEffect } from 'react'
+import BoardsList from 'src/components/ui/custom/board-list'
 import CreateBoardMenuItem from 'src/components/ui/custom/create-board-menu-item'
-import ThemeToggler from 'src/components/ui/custom/theme-toggler'
 import SidebarToggler from 'src/components/ui/custom/sidebar-toggler'
+import ThemeToggler from 'src/components/ui/custom/theme-toggler'
+import useBoards from 'src/store/data/boards'
+import { useStore, useWindowSize } from 'src/store/data/hooks'
+import useBound from 'src/store/data/hydrated'
 import useSidebar from 'src/store/sidebar'
 import { cn } from 'src/utils/cn'
-import clsx from 'clsx'
-import useBoards from 'src/store/data/boards'
-import useStore from 'src/store/data/hooks'
+import { Skeleton } from '../skeleton'
 
 const Sidebar = () => {
-    // const { boards } = useData((state) => state.data)
     const boards = useStore(useBoards, (state) => state.boards)
-    const open = useSidebar((state) => state.open)
+    const hydrated = useStore(useBound, (state) => state.hydrated)
+    const { open, setOpen } = useSidebar()
+
+    const { width } = useWindowSize()
 
     const classes = {
         'w-0 hidden': !open,
@@ -21,10 +26,27 @@ const Sidebar = () => {
             open,
     }
 
+    useEffect(() => {
+        if (width < 768 && open) {
+            setOpen(false)
+        }
+    }, [width, open, setOpen])
+
     return (
         <div className={cn(clsx(classes))}>
             <div className='flex-1'>
-                {boards && <BoardList boards={boards} />}
+                {hydrated ? (
+                    <BoardsList boards={boards} />
+                ) : (
+                    <div className='flex flex-col gap-2 w-full'>
+                        {[...Array(3)].map((_, index) => (
+                            <Skeleton
+                                key={index}
+                                className='h-12 mr-6 rounded-r-full'
+                            />
+                        ))}
+                    </div>
+                )}
                 <CreateBoardMenuItem />
             </div>
             <ThemeToggler />

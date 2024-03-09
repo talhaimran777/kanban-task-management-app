@@ -10,8 +10,24 @@ interface DialogState {
 const useDialog = create<DialogState>((set) => ({
     open: false,
     type: '',
-    setOpen: (open: boolean) => set((state) => ({ ...state, open })),
-    setType: (type: string) => set((state) => ({ ...state, type })),
+    setOpen: (open: boolean) => {
+        set((state) => {
+            if (state.open === open) {
+                return state
+            }
+
+            return { ...state, open }
+        })
+    },
+    setType: (type: string) => {
+        set((state) => {
+            if (state.type === type) {
+                return state
+            }
+
+            return { ...state, type }
+        })
+    },
 }))
 
 export default useDialog

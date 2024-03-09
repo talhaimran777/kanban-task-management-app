@@ -27,10 +27,12 @@ const Sidebar = () => {
     }
 
     useEffect(() => {
-        if (width < 768 && open) {
+        if (width < 768) {
             setOpen(false)
+        } else {
+            setOpen(true)
         }
-    }, [width, open, setOpen])
+    }, [width, setOpen])
 
     return (
         <div className={cn(clsx(classes))}>

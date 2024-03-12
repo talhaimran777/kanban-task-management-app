@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import Button from 'src/components/ui/custom/button'
 import Typography from 'src/components/ui/custom/typography'
@@ -27,7 +27,7 @@ import { useStore } from 'src/store/data/hooks'
 import useSubTask from 'src/store/data/subtasks'
 import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
-import { Column, Subtask } from 'src/types/mock'
+import { Column, Subtask, Task } from 'src/types/mock'
 import { z } from 'zod'
 import { Checkbox } from '../ui/checkbox'
 
@@ -97,12 +97,17 @@ const ViewTaskForm = () => {
         }
     }
 
-    useEffect(() => {
-        if (!task) {
-            return
+    const populateTask = useCallback((task: Task) => {
+        const populateSubtasks = (subtasks: Subtask[]) => {
+            subtasks.forEach((subtask: Subtask) => {
+                append({
+                    id: subtask.id,
+                    name: subtask.title,
+                    isCompleted: subtask.isCompleted,
+                })
+            })
         }
 
-        // TODO: Extract this to a service or function
         form.setValue('title', task.title)
         form.setValue('description', task.description)
 
@@ -118,14 +123,16 @@ const ViewTaskForm = () => {
             (subtask: Subtask) => subtask.taskId === task.id
         )
 
-        taskSubtasks.forEach((subtask: Subtask) => {
-            append({
-                id: subtask.id,
-                name: subtask.title,
-                isCompleted: subtask.isCompleted,
-            })
-        })
-    }, [task])
+        populateSubtasks(taskSubtasks)
+    }, [columns, form, append, subtasks])
+
+    useEffect(() => {
+        if (!task) {
+            return
+        }
+
+        populateTask(task)
+    }, [task, populateTask])
 
     return (
         <div>

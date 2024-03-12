@@ -10,9 +10,11 @@ const taskFormSchema = z.object({
     subtasks: z
         .array(
             z.object({
+                id: z.string().optional(), // Gets used when updating subtask
                 name: z
                     .string()
                     .min(2, 'Subtask must contains atleast 2 characters.'),
+                isCompleted: z.boolean().optional(), // Gets used when updating subtask
             })
         )
         .optional(),

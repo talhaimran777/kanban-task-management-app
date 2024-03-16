@@ -1,6 +1,7 @@
 import * as z from 'zod'
 
 const taskFormSchema = z.object({
+    id: z.string().optional(),
     title: z.string().min(2, {
         message: 'Task title must be at least 2 characters.',
     }),

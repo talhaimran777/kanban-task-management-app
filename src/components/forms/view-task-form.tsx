@@ -35,7 +35,13 @@ import { Checkbox } from '../ui/checkbox'
 const ViewTaskForm = () => {
     const { setOpen, setType } = useDialog()
     const task = useStore(useTasks, (state) => state.taskToView)
+    // INFO: we are not wrapping useTasks with useStore, as setTask is a setter function.
+    // we only wrap useStore when we are getting the store data.
+    const tasks = useStore(useTasks, (state) => state.tasks)
     const subtasks = useStore(useSubTask, (state) => state.subtasks)
+
+    const setTask = useTasks((state) => state.setTask)
+    const setSubtask = useSubTask((state) => state.setSubtask)
 
     const form = useForm<z.infer<typeof taskFormSchema>>({
         resolver: zodResolver(taskFormSchema),
@@ -57,74 +63,65 @@ const ViewTaskForm = () => {
 
     function onSubmit(values: z.infer<typeof taskFormSchema>) {
         if (values) {
-            // Values is containing this data 
-            // {
-            //     "title": "Test subtasks",
-            //     "description": "Testing subtasks view",
-            //     "subtasks": [
-            //         {
-            //             "id": "56787992-7bd6-4063-89ed-916bb4c9eb25",
-            //             "name": "Test subtask 1",
-            //             "isCompleted": true
-            //         },
-            //         {
-            //             "id": "02549c21-10da-405c-87e8-4f4fc4e822dc",
-            //             "name": "Test subtask 2",
-            //             "isCompleted": false
-            //         }
-            //     ],
-            //     "status": "cc0b85c8-2b84-4d15-b3cc-d3fb351dc2c9"
-            // }
+            // TODO: Extract this into a service
+            if (!values.id) {
+                return
+            }
 
+            const taskToBeUpdated: Task = tasks[values.id]
 
-            // TODO: WIP
+            taskToBeUpdated.columnId = values.status
 
+            setTask(taskToBeUpdated, values.id)
 
-            // const [task, subtasks] = createTaskService({ values })
-            //
-            // // Add newly created task to the board
-            // addTaskService({ task })
-            //
-            // // TODO: Extract this to a service
-            // subtasks.forEach((subtask) => {
-            //     const { subtasks, setSubtasks } = useSubTask.getState()
-            //
-            //     setSubtasks({ ...subtasks, [subtask.id]: subtask })
-            // })
-            //
-            // setOpen(false)
-            // setType('')
+            values.subtasks?.forEach((subtask) => {
+                if (subtask.id) {
+                    const subtaskToBeUpdated: Subtask = subtasks[subtask.id]
+                    subtaskToBeUpdated.isCompleted = Boolean(
+                        subtask.isCompleted
+                    )
+
+                    setSubtask(subtaskToBeUpdated, subtask.id)
+                }
+            })
+
+            setOpen(false)
+            setType('')
         }
     }
 
-    const populateTask = useCallback((task: Task) => {
-        const populateSubtasks = (subtasks: Subtask[]) => {
-            subtasks.forEach((subtask: Subtask) => {
-                append({
-                    id: subtask.id,
-                    name: subtask.title,
-                    isCompleted: subtask.isCompleted,
+    const populateTask = useCallback(
+        (task: Task) => {
+            const populateSubtasks = (subtasks: Subtask[]) => {
+                subtasks.forEach((subtask: Subtask) => {
+                    append({
+                        id: subtask.id,
+                        name: subtask.title,
+                        isCompleted: subtask.isCompleted,
+                    })
                 })
-            })
-        }
+            }
 
-        form.setValue('title', task.title)
-        form.setValue('description', task.description)
+            form.setValue('id', task.id)
+            form.setValue('title', task.title)
+            form.setValue('description', task.description)
 
-        const taskColumn: Column | undefined = columns.find(
-            (col) => col.id === task.columnId
-        )
+            const taskColumn: Column | undefined = columns.find(
+                (col) => col.id === task.columnId
+            )
 
-        if (taskColumn) {
-            form.setValue('status', taskColumn.id)
-        }
+            if (taskColumn) {
+                form.setValue('status', taskColumn.id)
+            }
 
-        const taskSubtasks = Object.values(subtasks).filter(
-            (subtask: Subtask) => subtask.taskId === task.id
-        )
+            const taskSubtasks = Object.values(subtasks).filter(
+                (subtask: Subtask) => subtask.taskId === task.id
+            )
 
-        populateSubtasks(taskSubtasks)
-    }, [columns, form, append, subtasks])
+            populateSubtasks(taskSubtasks)
+        },
+        [columns, form, append, subtasks]
+    )
 
     useEffect(() => {
         if (!task) {
@@ -132,7 +129,7 @@ const ViewTaskForm = () => {
         }
 
         populateTask(task)
-    }, [task, populateTask])
+    }, [task])
 
     return (
         <div>

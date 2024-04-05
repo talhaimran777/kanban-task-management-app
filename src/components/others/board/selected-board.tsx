@@ -36,10 +36,12 @@ const SelectedBoard = () => {
         <div>
             {hydrated ? (
                 <div
-                    className={`flex justify-between items-center gap-2 ${showMobileMenu ? 'cursor-pointer' : ''}`}
+                    className={`flex justify-between items-center gap-2 ${
+                        showMobileMenu ? 'cursor-pointer' : ''
+                    }`}
                     onClick={() => {
                         if (type === 'mobile-menu-dialog') {
-                            return;
+                            return
                         }
 
                         if (showMobileMenu) {

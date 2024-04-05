@@ -1,20 +1,28 @@
 'use client'
 
-import Typography from 'src/components/ui/custom/typography'
+import VerticalEllipsisIcon from 'images/icon-vertical-ellipsis.svg'
+import Image from 'next/image'
 import ViewTaskForm from 'src/components/forms/view-task-form'
-import useDialog from 'src/store/dialog'
+import Typography from 'src/components/ui/custom/typography'
 import {
     Dialog,
     DialogContent,
     DialogDescription,
     DialogTitle,
 } from 'src/components/ui/dialog'
-import useTasks from 'src/store/data/tasks'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from 'src/components/ui/dropdown-menu'
 import { useStore } from 'src/store/data/hooks'
+import useTasks from 'src/store/data/tasks'
+import useDialog from 'src/store/dialog'
 
 const ViewTaskDialog = () => {
     const { open, type, setOpen, setType } = useDialog()
-    const task = useStore(useTasks, state => state.taskToView)
+    const task = useStore(useTasks, (state) => state.taskToView)
 
     return (
         <Dialog
@@ -32,6 +40,33 @@ const ViewTaskDialog = () => {
                         size='large'
                         className='text-black dark:text-white capitalize'
                     />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <Image
+                                className='cursor-pointer'
+                                src={VerticalEllipsisIcon}
+                                alt='Vertical Ellipsis Icon'
+                                height={4}
+                                width={4}
+                            />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    setOpen(true)
+                                    setType('edit-task-dialog')
+                                }}
+                            >
+                                Edit Task
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => console.log('Delete task')}
+                                className='text-red-primary'
+                            >
+                                Delete Task
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </DialogTitle>
                 <DialogDescription>
                     <ViewTaskForm />
@@ -42,4 +77,3 @@ const ViewTaskDialog = () => {
 }
 
 export default ViewTaskDialog
-

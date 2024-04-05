@@ -21,7 +21,10 @@ const useTasks = create<TaskStore>()(
                 set((state) => ({ ...state, tasks: { ...tasks } })),
 
             setTask: (task: Task, taskId: string) =>
-                set((state) => ({ ...state, tasks: { ...state.tasks, [taskId]: task } })),
+                set((state) => ({
+                    ...state,
+                    tasks: { ...state.tasks, [taskId]: task },
+                })),
 
             setTaskToView: (task: Task | null) =>
                 set((state) => ({ ...state, taskToView: task })),

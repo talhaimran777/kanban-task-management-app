@@ -17,7 +17,10 @@ const useSubTask = create<SubtaskStore>()(
                 set((state) => ({ ...state, subtasks: { ...subtasks } })),
 
             setSubtask: (subtask: Subtask, id: string) =>
-                set((state) => ({ ...state, subtasks: { ...state.subtasks, [id]: subtask } })),
+                set((state) => ({
+                    ...state,
+                    subtasks: { ...state.subtasks, [id]: subtask },
+                })),
         }),
         {
             name: 'subtasks-storage',

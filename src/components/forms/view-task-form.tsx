@@ -35,9 +35,8 @@ import { Checkbox } from '../ui/checkbox'
 const ViewTaskForm = () => {
     const { setOpen, setType } = useDialog()
     const task = useStore(useTasks, (state) => state.taskToView)
-    // INFO: we are not wrapping useTasks with useStore, as setTask is a setter function.
-    // we only wrap useStore when we are getting the store data.
-    const tasks = useStore(useTasks, (state) => state.tasks)
+
+    // INFO: we will wrap useSubTask with useStore, as we are trying to get the subtasks
     const subtasks = useStore(useSubTask, (state) => state.subtasks)
 
     const setTask = useTasks((state) => state.setTask)
@@ -68,7 +67,7 @@ const ViewTaskForm = () => {
                 return
             }
 
-            const taskToBeUpdated: Task = tasks[values.id]
+            const taskToBeUpdated: Task = task
 
             taskToBeUpdated.columnId = values.status
 
@@ -114,6 +113,7 @@ const ViewTaskForm = () => {
                 form.setValue('status', taskColumn.id)
             }
 
+            // TODO: Extract this into a service, it should receive task id and return subtasks
             const taskSubtasks = Object.values(subtasks).filter(
                 (subtask: Subtask) => subtask.taskId === task.id
             )

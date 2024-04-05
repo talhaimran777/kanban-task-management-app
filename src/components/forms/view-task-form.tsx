@@ -42,6 +42,7 @@ const ViewTaskForm = () => {
     const setTask = useTasks((state) => state.setTask)
     const setSubtask = useSubTask((state) => state.setSubtask)
 
+    // TODO: Populate the form with the task data here
     const form = useForm<z.infer<typeof taskFormSchema>>({
         resolver: zodResolver(taskFormSchema),
         defaultValues: {
@@ -89,6 +90,7 @@ const ViewTaskForm = () => {
         }
     }
 
+    // TODO: Convert this to populate subtasks only
     const populateTask = useCallback(
         (task: Task) => {
             const populateSubtasks = (subtasks: Subtask[]) => {

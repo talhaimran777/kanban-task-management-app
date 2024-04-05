@@ -42,10 +42,10 @@ const EditTaskForm = () => {
     const form = useForm<z.infer<typeof taskFormSchema>>({
         resolver: zodResolver(taskFormSchema),
         defaultValues: {
-            title: '',
-            description: '',
+            title: task?.title,
+            description: task?.description,
             subtasks: [],
-            status: '',
+            status: task?.columnId,
         },
     })
 
@@ -80,50 +80,32 @@ const EditTaskForm = () => {
         }
     }
 
-    const populateTask = useCallback(
-        (task: Task) => {
-            const populateSubtasks = (subtasks: Subtask[]) => {
-                subtasks.forEach((subtask: Subtask) => {
-                    append({
-                        id: subtask.id,
-                        name: subtask.title,
-                        isCompleted: subtask.isCompleted,
-                    })
-                })
-            }
-
-            form.setValue('id', task.id)
-            form.setValue('title', task.title)
-            form.setValue('description', task.description)
-
-            const taskColumn: Column | undefined = columns.find(
-                (col) => col.id === task.columnId
-            )
-
-            if (taskColumn) {
-                form.setValue('status', taskColumn.id)
-            }
-
-            // TODO: Extract this into a service, it should receive task id and return subtasks
-            const taskSubtasks = Object.values(subtasks).filter(
-                (subtask: Subtask) => subtask.taskId === task.id
-            )
-
-            populateSubtasks(taskSubtasks)
-        },
-        [columns, form, append, subtasks]
-    )
+    let subtasksRendered = false
 
     useEffect(() => {
         if (!task) {
             return
         }
 
-        if (!!form.getValues('title')) {
-            return
+        const populateSubtasks = (subtasks: Subtask[]) => {
+            subtasks.forEach((subtask: Subtask) => {
+                append({
+                    id: subtask.id,
+                    name: subtask.title,
+                    isCompleted: subtask.isCompleted,
+                })
+            })
+            subtasksRendered = true
         }
 
-        populateTask(task)
+        // TODO: Extract this into a service, it should receive task id and return subtasks
+        const taskSubtasks = Object.values(subtasks).filter(
+            (subtask: Subtask) => subtask.taskId === task.id
+        )
+
+        if (!subtasksRendered) {
+            populateSubtasks(taskSubtasks)
+        }
     }, [task])
 
     return (

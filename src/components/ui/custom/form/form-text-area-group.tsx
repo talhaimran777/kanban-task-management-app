@@ -6,7 +6,6 @@ import {
     FormLabel,
     FormMessage,
 } from 'src/components/ui/form'
-import { Input } from 'src/components/ui/input'
 import { Textarea } from 'src/components/ui/textarea'
 
 interface Props {
@@ -15,14 +14,16 @@ interface Props {
     label: string
     placeholder: string
     hideLabel?: boolean
+    onPaste?: (event: React.ClipboardEvent<HTMLTextAreaElement>) => void
 }
 
-const FormInputGroup = ({
+const FormTextAreaGroup = ({
     name,
     label,
     placeholder,
     control,
     hideLabel = false,
+    ...rest
 }: Props) => {
     return (
         <div className='flex-1'>
@@ -41,7 +42,11 @@ const FormInputGroup = ({
                             </FormLabel>
                         )}
                         <FormControl className='dark:bg-dark-grey dark:border-grey-ternary focus-visible:ring-purple-primary dark:focus-visible:ring-purple-primary focus-visible:ring-offset-0 focus-visible:ring-2'>
-                            <Input placeholder={placeholder} {...field} />
+                            <Textarea
+                                placeholder={placeholder}
+                                {...field}
+                                {...rest}
+                            />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -51,4 +56,4 @@ const FormInputGroup = ({
     )
 }
 
-export default FormInputGroup
+export default FormTextAreaGroup

@@ -30,6 +30,7 @@ export interface Task {
     title: string
     description: string
     columnId: string
+    images?: string[]
 }
 
 export interface Subtask {

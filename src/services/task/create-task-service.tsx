@@ -5,14 +5,20 @@ import { z } from 'zod'
 
 export const createTaskService = ({
     values,
+    images = [],
 }: {
     values: z.infer<typeof taskFormSchema>
+    images?: string[]
 }): [Task, Subtask[]] => {
     const task: Task = {
         id: uuidv4(),
         title: values.title,
         description: values.description,
         columnId: values.status, // values.status will contain the columnId
+    }
+
+    if (images.length > 0) {
+        task.images = images
     }
 
     // TODO: Extract this to a service, createSubtaskService that will list of subtask titles & taskId

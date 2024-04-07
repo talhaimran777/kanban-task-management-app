@@ -29,7 +29,8 @@ import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
 import { Column, Subtask, Task } from 'src/types/mock'
 import { z } from 'zod'
-import { Checkbox } from '../ui/checkbox'
+import { Checkbox } from 'src/components/ui/checkbox'
+import TaskImages from 'src/components/ui/custom/form/task-images'
 
 // TODO: This form is rendering twice, fix it
 const ViewTaskForm = () => {
@@ -141,10 +142,15 @@ const ViewTaskForm = () => {
                 variant='body'
                 className='text-grey-ternary text-justify'
             />
+
+            <div className='grid gap-6 mt-6'>
+                <TaskImages images={task?.images ?? []} />
+            </div>
+
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className='mt-4 flex flex-col gap-6'
+                    className='mt-6 flex flex-col gap-6'
                 >
                     {!!fields?.length && (
                         <div>

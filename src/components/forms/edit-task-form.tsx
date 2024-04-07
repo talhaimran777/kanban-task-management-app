@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import CrossIcon from 'src/assets/svg-icons/CrossIcon'
 import Button from 'src/components/ui/custom/button'
@@ -30,12 +30,17 @@ import { createTaskService } from 'src/services/task/create-task-service'
 import useSubTask from 'src/store/data/subtasks'
 import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
-import { Column, Subtask, Task } from 'src/types/mock'
+import { Subtask } from 'src/types/mock'
 import { z } from 'zod'
 import { useStore } from 'zustand'
+import FormTextAreaGroup from '../ui/custom/form/form-text-area-group'
+import TaskImages from '../ui/custom/form/task-images'
 
 const EditTaskForm = () => {
     const { setOpen, setType } = useDialog()
+
+    const [images, setImages] = useState<string[]>([])
+
     const task = useStore(useTasks, (state) => state.taskToView)
     const subtasks = useStore(useSubTask, (state) => state.subtasks)
 
@@ -108,6 +113,46 @@ const EditTaskForm = () => {
         }
     }, [task])
 
+    useEffect(() => {
+        if (!task || !task?.images) {
+            return
+        }
+
+        setImages([...task.images])
+    }, [task?.images])
+
+    // TODO: Extract it into a service, add/edit task form uses it
+    const onPasteTextArea = (
+        event: React.ClipboardEvent<HTMLTextAreaElement>
+    ) => {
+        const items = event.clipboardData.items
+
+        for (let index in items) {
+            const item = items[index]
+
+            if (item.kind !== 'file') {
+                return
+            }
+
+            const blob = item.getAsFile()
+
+            if (!blob) {
+                return
+            }
+
+            const reader = new FileReader()
+            reader.onload = function (event) {
+                const fileReader = event.target as FileReader
+
+                const src = fileReader.result as string
+
+                setImages([...images, src])
+            }
+
+            reader.readAsDataURL(blob)
+        }
+    }
+
     return (
         <Form {...form}>
             <form
@@ -121,12 +166,17 @@ const EditTaskForm = () => {
                     control={form.control}
                 />
 
-                <FormInputGroup
+                <FormTextAreaGroup
                     name='description'
-                    label='Description'
+                    label='Description | ( supports pasting images )'
                     placeholder='e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little.'
                     control={form.control}
+                    onPaste={onPasteTextArea}
                 />
+
+                <div className='grid gap-6'>
+                    <TaskImages images={images ?? []} />
+                </div>
 
                 <FormLabel className='-mb-4'>
                     <Typography

@@ -1,16 +1,11 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useFieldArray, useForm } from 'react-hook-form'
 import CrossIcon from 'src/assets/svg-icons/CrossIcon'
 import Button from 'src/components/ui/custom/button'
 import FormInputGroup from 'src/components/ui/custom/form/form-input-group'
 import Typography from 'src/components/ui/custom/typography'
-import { useFieldArray, useForm } from 'react-hook-form'
-import taskFormSchema from 'src/schema/task-form-schema'
-import useCurrentBoard from 'src/services/board/get-current-board'
-import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
-import addTaskService from 'src/services/task/add-task-service'
-import { createTaskService } from 'src/services/task/create-task-service'
 import {
     Form,
     FormControl,
@@ -26,12 +21,23 @@ import {
     SelectTrigger,
     SelectValue,
 } from 'src/components/ui/select'
-import { z } from 'zod'
+import taskFormSchema from 'src/schema/task-form-schema'
+import useCurrentBoard from 'src/services/board/get-current-board'
+import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
+import addTaskService from 'src/services/task/add-task-service'
+import { createTaskService } from 'src/services/task/create-task-service'
 import useSubTask from 'src/store/data/subtasks'
 import useDialog from 'src/store/dialog'
+import { z } from 'zod'
+import FormTextAreaGroup from '../ui/custom/form/form-text-area-group'
+import Image from 'next/image'
+import { useState } from 'react'
+import TaskImages from '../ui/custom/form/task-images'
 
 const AddTaskForm = () => {
     const { setOpen, setType } = useDialog()
+
+    const [images, setImages] = useState<string[]>([])
 
     const form = useForm<z.infer<typeof taskFormSchema>>({
         resolver: zodResolver(taskFormSchema),
@@ -57,7 +63,7 @@ const AddTaskForm = () => {
 
     function onSubmit(values: z.infer<typeof taskFormSchema>) {
         if (values) {
-            const [task, subtasks] = createTaskService({ values })
+            const [task, subtasks] = createTaskService({ values, images })
 
             // Add newly created task to the board
             addTaskService({ task })
@@ -74,6 +80,38 @@ const AddTaskForm = () => {
         }
     }
 
+    // TODO: Extract it into a service, add/edit task form uses it
+    const onPasteTextArea = (
+        event: React.ClipboardEvent<HTMLTextAreaElement>
+    ) => {
+        const items = event.clipboardData.items
+
+        for (let index in items) {
+            const item = items[index]
+
+            if (item.kind !== 'file') {
+                return
+            }
+
+            const blob = item.getAsFile()
+
+            if (!blob) {
+                return
+            }
+
+            const reader = new FileReader()
+            reader.onload = function (event) {
+                const fileReader = event.target as FileReader
+
+                const src = fileReader.result as string
+
+                setImages([...images, src])
+            }
+
+            reader.readAsDataURL(blob)
+        }
+    }
+
     return (
         <Form {...form}>
             <form
@@ -87,12 +125,17 @@ const AddTaskForm = () => {
                     control={form.control}
                 />
 
-                <FormInputGroup
+                <FormTextAreaGroup
                     name='description'
-                    label='Description'
+                    label='Description | ( supports pasting images )'
                     placeholder='e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little.'
                     control={form.control}
+                    onPaste={onPasteTextArea}
                 />
+
+                <div className='grid gap-6'>
+                    <TaskImages images={images ?? []} />
+                </div>
 
                 <FormLabel className='-mb-4'>
                     <Typography

@@ -135,7 +135,7 @@ const ViewTaskForm = () => {
     }, [task])
 
     return (
-        <div>
+        <div className='flex flex-col gap-6'>
             <Typography
                 text={task?.description ?? ''}
                 size='medium'
@@ -143,14 +143,12 @@ const ViewTaskForm = () => {
                 className='text-grey-ternary text-justify'
             />
 
-            <div className='grid gap-6 mt-6'>
-                <TaskImages images={task?.images ?? []} />
-            </div>
+            <TaskImages images={task?.images ?? []} />
 
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className='mt-6 flex flex-col gap-6'
+                    className='flex flex-col gap-6'
                 >
                     {!!fields?.length && (
                         <div>
@@ -158,7 +156,7 @@ const ViewTaskForm = () => {
                                 text='Subtasks'
                                 variant='heading'
                                 size='small'
-                                className='text-black dark:text-white mb-4'
+                                className='text-black dark:text-white mb-2'
                             />
 
                             <div className='flex flex-col gap-2'>

@@ -174,9 +174,7 @@ const EditTaskForm = () => {
                     onPaste={onPasteTextArea}
                 />
 
-                <div className='grid gap-6'>
-                    <TaskImages images={images ?? []} />
-                </div>
+                <TaskImages images={images ?? []} />
 
                 <FormLabel className='-mb-4'>
                     <Typography

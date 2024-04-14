@@ -3,7 +3,7 @@
 import clsx from 'clsx'
 import BoardInfo from 'src/components/others/board/board-info'
 import useSidebar from 'src/store/sidebar'
-import { cn } from 'src/utils/cn'
+import { cn } from 'src/utils'
 
 export default function Home() {
     const open = useSidebar((state) => state.open)

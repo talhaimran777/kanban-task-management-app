@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
-import { cn } from 'src/utils/cn'
+import { cn } from 'src/utils'
 
 interface Props {
     text: string

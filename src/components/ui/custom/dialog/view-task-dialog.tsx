@@ -60,7 +60,10 @@ const ViewTaskDialog = () => {
                                 Edit Task
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                                onClick={() => console.log('Delete task')}
+                                onClick={() => {
+                                    setOpen(true)
+                                    setType('delete-task-dialog')
+                                }}
                                 className='text-red-primary'
                             >
                                 Delete Task

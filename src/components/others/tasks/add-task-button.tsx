@@ -6,7 +6,7 @@ import Image from 'next/image'
 import useCurrentBoard from 'src/services/board/get-current-board'
 import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
 import useDialog from 'src/store/dialog'
-import { cn } from 'src/utils/cn'
+import { cn } from 'src/utils'
 
 const AddTaskButton = () => {
     const { setOpen, setType } = useDialog()

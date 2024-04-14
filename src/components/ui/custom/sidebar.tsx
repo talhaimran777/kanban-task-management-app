@@ -10,7 +10,7 @@ import useBoards from 'src/store/data/boards'
 import { useStore, useWindowSize } from 'src/store/data/hooks'
 import useBound from 'src/store/data/hydrated'
 import useSidebar from 'src/store/sidebar'
-import { cn } from 'src/utils/cn'
+import { cn } from 'src/utils'
 import { Skeleton } from '../skeleton'
 
 const Sidebar = () => {

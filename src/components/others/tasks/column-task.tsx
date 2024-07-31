@@ -6,13 +6,19 @@ import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
 import { Task } from 'src/types/mock'
 
-const ColumnTask = ({ task }: { task: Task }) => {
+const ColumnTask = ({
+    task,
+    isDragging = false,
+}: {
+    task: Task
+    isDragging?: boolean
+}) => {
     const { setType, setOpen } = useDialog()
     const { setTaskToView } = useTasks()
 
     return (
         <div
-            className='flex flex-col gap-2 bg-white dark:bg-dark-grey py-6 px-4 rounded-md shadow-md cursor-pointer'
+            className={`${isDragging ? 'invisible' : 'bg-white dark:bg-dark-grey '} flex flex-col gap-2 py-6 px-4 rounded-md shadow-md cursor-pointer`}
             onClick={() => {
                 setOpen(true)
                 setType('view-task-dialog')

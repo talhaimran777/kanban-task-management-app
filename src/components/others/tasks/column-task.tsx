@@ -23,15 +23,11 @@ const ColumnTask = ({ task }: { task: Task }) => {
     return (
         <div
             ref={drag}
-            className='flex flex-col gap-2 bg-white dark:bg-dark-grey py-6 px-4 rounded-md shadow-md cursor-pointer'
+            className={`flex flex-col gap-2 bg-white dark:bg-dark-grey py-6 px-4 rounded-md shadow-md cursor-pointer ${isDragging ? 'opacity-50' : 'opacity-100'}`}
             onClick={() => {
                 setOpen(true)
                 setType('view-task-dialog')
                 setTaskToView(task)
-            }}
-            style={{
-                opacity: isDragging ? 0.5 : 1,
-                cursor: 'move',
             }}
         >
             <Typography text={task.title} size='medium' variant='heading' />

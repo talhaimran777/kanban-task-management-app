@@ -9,7 +9,7 @@ const BoardColumns = ({ columns }: { columns: Column[] }) => {
         <DndProvider backend={HTML5Backend}>
             <div className='flex gap-6 max-h-[calc(100vh-72px)] h-full w-full px-6 overflow-auto'>
                 {columns.map((column, index) => (
-                    <BoardColumn column={column} key={index} />
+                    <BoardColumn column={column} key={column.id} />
                 ))}
                 <ColumnCreator />
             </div>

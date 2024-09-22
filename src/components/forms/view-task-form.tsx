@@ -107,14 +107,7 @@ const ViewTaskForm = () => {
             form.setValue('id', task.id)
             form.setValue('title', task.title)
             form.setValue('description', task.description)
-
-            const taskColumn: Column | undefined = columns.find(
-                (col) => col.id === task.columnId
-            )
-
-            if (taskColumn) {
-                form.setValue('status', taskColumn.id)
-            }
+            form.setValue('status', task.columnId)
 
             // TODO: Extract this into a service, it should receive task id and return subtasks
             const taskSubtasks = Object.values(subtasks).filter(

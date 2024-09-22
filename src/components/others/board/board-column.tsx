@@ -1,11 +1,11 @@
-import Typography from 'src/components/ui/custom/typography'
-import { Column, Task, Tasks } from 'src/types/mock'
-import ColumnTasks from '../tasks/column-tasks'
-import useTask from 'src/store/data/tasks'
-import { useStore } from 'src/store/data/hooks'
+import { LegacyRef } from 'react'
 import { useDrop } from 'react-dnd'
+import Typography from 'src/components/ui/custom/typography'
+import { useStore } from 'src/store/data/hooks'
+import { default as useTask, default as useTasks } from 'src/store/data/tasks'
+import { Column, Task, Tasks } from 'src/types/mock'
 import { ItemTypes } from 'src/utils'
-import useTasks from 'src/store/data/tasks'
+import ColumnTasks from '../tasks/column-tasks'
 
 // TODO: Extract this to a service file
 const getTasksByColumnId = (tasks: Tasks, columnId: string) => {
@@ -30,7 +30,7 @@ const BoardColumn = ({ column }: { column: Column }) => {
 
     return (
         <div
-            ref={drop}
+            ref={drop as unknown as LegacyRef<HTMLDivElement>}
             className='max-w-[280px] min-w-[280px] my-6 flex flex-col gap-6'
         >
             <Typography

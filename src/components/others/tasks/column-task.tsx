@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { LegacyRef } from 'react'
 import { useDrag } from 'react-dnd'
 import Typography from 'src/components/ui/custom/typography'
 import useTasks from 'src/store/data/tasks'
@@ -22,7 +22,7 @@ const ColumnTask = ({ task }: { task: Task }) => {
 
     return (
         <div
-            ref={drag}
+            ref={drag as unknown as LegacyRef<HTMLDivElement>}
             className={`flex flex-col gap-2 bg-white dark:bg-dark-grey py-6 px-4 rounded-md shadow-md cursor-pointer ${isDragging ? 'opacity-50' : 'opacity-100'}`}
             onClick={() => {
                 setOpen(true)

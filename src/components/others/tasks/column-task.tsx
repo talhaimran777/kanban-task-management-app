@@ -3,9 +3,10 @@
 import { LegacyRef } from 'react'
 import { useDrag } from 'react-dnd'
 import Typography from 'src/components/ui/custom/typography'
+import useSubTask from 'src/store/data/subtasks'
 import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
-import { Task } from 'src/types/mock'
+import { Subtask, Task } from 'src/types/mock'
 import { ItemTypes } from 'src/utils'
 
 const ColumnTask = ({ task }: { task: Task }) => {
@@ -19,6 +20,17 @@ const ColumnTask = ({ task }: { task: Task }) => {
 
     const { setType, setOpen } = useDialog()
     const { setTaskToView } = useTasks()
+    const { subtasks } = useSubTask()
+
+    // TODO: Extract this into a service, it should receive task id and return subtasks
+    const totalSubtasks = Object.values(subtasks).filter(
+        (subtask: Subtask) => subtask.taskId === task.id
+    )
+
+    // TODO: Extract this into a service
+    const completedSubtasksCount = totalSubtasks.filter(
+        (subtask: Subtask) => subtask.isCompleted
+    ).length
 
     return (
         <div
@@ -31,10 +43,8 @@ const ColumnTask = ({ task }: { task: Task }) => {
             }}
         >
             <Typography text={task.title} size='medium' variant='heading' />
-            {/* TODO: Rather than show description, we need to show the count of the completed subtasks */}
-            {/* For Example: 0 of 1 substasks */}
             <Typography
-                text={task.description}
+                text={`${completedSubtasksCount} of ${totalSubtasks.length} subtasks`}
                 size='medium'
                 variant='body'
                 className='text-grey-ternary text-justify'

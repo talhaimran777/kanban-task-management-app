@@ -5,9 +5,7 @@ const taskFormSchema = z.object({
     title: z.string().min(2, {
         message: 'Task title must be at least 2 characters.',
     }),
-    description: z.string().min(10, {
-        message: 'Task description must be at least 10 characters.',
-    }),
+    description: z.string().optional(),
     subtasks: z
         .array(
             z.object({

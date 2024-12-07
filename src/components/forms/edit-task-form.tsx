@@ -1,4 +1,5 @@
 'use client'
+import { v4 as uuidv4 } from 'uuid'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
@@ -25,8 +26,6 @@ import {
 import taskFormSchema from 'src/schema/task-form-schema'
 import useCurrentBoard from 'src/services/board/get-current-board'
 import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
-import addTaskService from 'src/services/task/add-task-service'
-import { createTaskService } from 'src/services/task/create-task-service'
 import useSubTask from 'src/store/data/subtasks'
 import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
@@ -42,11 +41,16 @@ const EditTaskForm = () => {
     const [images, setImages] = useState<string[]>([])
 
     const task = useStore(useTasks, (state) => state.taskToView)
-    const subtasks = useStore(useSubTask, (state) => state.subtasks)
+    const setTask = useStore(useTasks, (state) => state.setTask)
+    const { subtasks, setSubtask, setSubtasks } = useStore(
+        useSubTask,
+        (state) => state
+    )
 
     const form = useForm<z.infer<typeof taskFormSchema>>({
         resolver: zodResolver(taskFormSchema),
         defaultValues: {
+            id: task?.id,
             title: task?.title,
             description: task?.description,
             subtasks: [],
@@ -67,17 +71,31 @@ const EditTaskForm = () => {
     const columns = getColumnsByBoardId(selectedBoard?.id as string)
 
     function onSubmit(values: z.infer<typeof taskFormSchema>) {
-        if (values) {
-            const [task, subtasks] = createTaskService({ values })
+        if (values.id) {
+            setTask(
+                {
+                    id: values.id,
+                    title: values.title,
+                    description: values.description,
+                    columnId: values.status,
+                    images,
+                },
+                values.id
+            )
 
-            // Add newly created task to the board
-            addTaskService({ task })
+            // TODO: Extract this into a service
+            const subtasks =
+                values.subtasks?.map((subtask) => ({
+                    id: subtask.id ?? uuidv4(),
+                    title: subtask.name,
+                    isCompleted: subtask.isCompleted,
+                    taskId: values.id,
+                })) ?? []
 
-            // TODO: Extract this to a service
+            setSubtasks({})
+
             subtasks.forEach((subtask) => {
-                const { subtasks, setSubtasks } = useSubTask.getState()
-
-                setSubtasks({ ...subtasks, [subtask.id]: subtask })
+                setSubtask(subtask as Subtask, subtask.id)
             })
 
             setOpen(false)
@@ -184,10 +202,10 @@ const EditTaskForm = () => {
                     />
                 </FormLabel>
 
-                {subtaskFields.map((_field, index) => (
+                {subtaskFields.map((field, index) => (
                     <div
                         className='flex justify-between items-center gap-4'
-                        key={index}
+                        key={field.id}
                     >
                         <FormInputGroup
                             name={`subtasks.${index}.name`}
@@ -253,7 +271,7 @@ const EditTaskForm = () => {
                     variant='primary'
                     size='small'
                     fluid={true}
-                    text='Create a New Task'
+                    text='Update Task'
                 />
             </form>
         </Form>

@@ -76,7 +76,7 @@ const EditTaskForm = () => {
                 {
                     id: values.id,
                     title: values.title,
-                    description: values.description,
+                    description: values.description ?? "",
                     columnId: values.status,
                     images,
                 },

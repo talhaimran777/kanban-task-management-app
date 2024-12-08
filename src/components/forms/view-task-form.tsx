@@ -130,6 +130,15 @@ const ViewTaskForm = () => {
         populateTask(task)
     }, [task])
 
+    // INFO: Fix for prod only, obviosly this will run for dev too
+    useEffect(() => {
+        if (!task?.columnId) {
+            return;
+        }
+
+        form.setValue('status', task.columnId)
+    }, [task?.columnId])
+
     return (
         <div className='flex flex-col gap-6'>
             <Typography

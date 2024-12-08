@@ -107,6 +107,9 @@ const ViewTaskForm = () => {
             form.setValue('id', task.id)
             form.setValue('title', task.title)
             form.setValue('description', task.description)
+
+            console.log('Setting task status', task.columnId)
+
             form.setValue('status', task.columnId)
 
             // TODO: Extract this into a service, it should receive task id and return subtasks

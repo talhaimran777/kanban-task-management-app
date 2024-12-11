@@ -3,7 +3,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useEffect } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
+import { Checkbox } from 'src/components/ui/checkbox'
 import Button from 'src/components/ui/custom/button'
+import TaskImages from 'src/components/ui/custom/form/task-images'
 import Typography from 'src/components/ui/custom/typography'
 import {
     Form,
@@ -27,10 +29,8 @@ import { useStore } from 'src/store/data/hooks'
 import useSubTask from 'src/store/data/subtasks'
 import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
-import { Column, Subtask, Task } from 'src/types/mock'
+import { Subtask, Task } from 'src/types/mock'
 import { z } from 'zod'
-import { Checkbox } from 'src/components/ui/checkbox'
-import TaskImages from 'src/components/ui/custom/form/task-images'
 
 // TODO: This form is rendering twice, fix it
 const ViewTaskForm = () => {

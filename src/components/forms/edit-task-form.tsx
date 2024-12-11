@@ -33,19 +33,14 @@ import { Subtask } from 'src/types/mock'
 import { z } from 'zod'
 import FormTextAreaGroup from '../ui/custom/form/form-text-area-group'
 import TaskImages from '../ui/custom/form/task-images'
-import { useStore } from 'src/store/data/hooks'
 
 const EditTaskForm = () => {
     const { setOpen, setType } = useDialog()
 
     const [images, setImages] = useState<string[]>([])
 
-    const task = useStore(useTasks, (state) => state.taskToView)
-
-    const setTask = useTasks((state) => state.setTask)
-    const { setSubtask, setSubtasks } = useSubTask((state) => state)
-
-    const subtasks = useStore(useSubTask, (state) => state.subtasks)
+    const { taskToView: task, setTask } = useTasks((state) => state)
+    const { setSubtask, setSubtasks, subtasks } = useSubTask((state) => state)
 
     const form = useForm<z.infer<typeof taskFormSchema>>({
         resolver: zodResolver(taskFormSchema),

@@ -9,12 +9,12 @@ const deleteTaskById = async ({ id }: { id: string }) => {
         return
     }
 
-    const tasks = useTasks.getState().tasks
+    const { tasks, setTasks } = useTasks.getState()
 
     // TODO: Also delete it's associated subtasks
     delete tasks[id]
 
-    useTasks.setState({ tasks })
+    setTasks(tasks)
 }
 
 export default deleteTaskById

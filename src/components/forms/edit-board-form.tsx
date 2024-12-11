@@ -11,6 +11,7 @@ import editBoardService from 'src/services/board/edit-board-service'
 import addColumnService from 'src/services/column/add-columns-service'
 import createColumnService from 'src/services/column/create-column-service'
 import editColumnService from 'src/services/column/edit-columns-service'
+import useColumns from 'src/store/data/columns'
 import useDialog from 'src/store/dialog'
 import { Board, Column } from 'src/types/mock'
 import { z } from 'zod'
@@ -23,6 +24,7 @@ const EditBoardForm = ({
     columns: Column[]
 }) => {
     const { setOpen, setType } = useDialog()
+    const { resetColumns } = useColumns((state) => state)
     const form = useForm<z.infer<typeof boardFormSchema>>({
         resolver: zodResolver(boardFormSchema),
         defaultValues: {
@@ -42,13 +44,13 @@ const EditBoardForm = ({
 
     const onSubmit = async (values: z.infer<typeof boardFormSchema>) => {
         try {
-            // TODO: Extract this to a service
-            const boardToUpdate: Board = {
+            editBoardService({
                 id: board.id,
                 name: values.name,
-            }
+            })
 
-            editBoardService(boardToUpdate)
+            // TODO: check if any of the columns contains tasks in them.
+            resetColumns()
 
             if (values.columns) {
                 // TODO: Extract this to a service
@@ -56,24 +58,14 @@ const EditBoardForm = ({
                 // then delete the extra columns
                 values.columns.forEach((column) => {
                     if (column.id) {
-                        // Existing column
-                        const existingColumn: Column = {
+                        return editColumnService({
                             id: column.id,
                             name: column.name,
                             boardId: board.id,
-                        }
-
-                        editColumnService(existingColumn)
-                    } else {
-                        // New column
-                        const newColumn = createColumnService(
-                            column.name,
-                            board.id
-                        )
-
-                        // Adds newly created column to the global state
-                        addColumnService(newColumn)
+                        })
                     }
+
+                    addColumnService(createColumnService(column.name, board.id))
                 })
             }
 
@@ -97,10 +89,10 @@ const EditBoardForm = ({
                     control={form.control}
                 />
 
-                {columnsFields.map((_field, index) => (
+                {columnsFields.map((field, index) => (
                     <div
                         className='flex justify-between items-center gap-4'
-                        key={index}
+                        key={field.id}
                     >
                         <FormInputGroup
                             name={`columns.${index}.name`}

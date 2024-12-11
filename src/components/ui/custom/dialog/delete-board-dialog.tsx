@@ -11,24 +11,22 @@ import {
     DialogTitle,
 } from 'src/components/ui/dialog'
 
-import deleteTaskById from 'src/services/task/delete-task-by-task-id'
-import useTasks from 'src/store/data/tasks'
+import deleteBoardById from 'src/services/board/delete-board-by-id'
+import useCurrentBoard from 'src/services/board/get-current-board'
 
-const DeleteTaskDialog = () => {
+const DeleteBoardDialog = () => {
     const { open, type, setType } = useDialog()
-    const { setTaskToView, taskToView: task } = useTasks((state) => state)
+    const selectedBoard = useCurrentBoard()
 
     return (
         <Dialog
-            open={open && type === 'delete-task-dialog'}
-            onOpenChange={() => {
-                setType('view-task-dialog')
-            }}
+            open={open && type === 'delete-board-dialog'}
+            onOpenChange={() => {}}
         >
             <DialogContent className='p-6 max-h-[calc(100vh-5%)] overflow-auto'>
                 <DialogTitle className='flex justify-between items-center'>
                     <Typography
-                        text='Delete this task?'
+                        text='Delete this board?'
                         variant='heading'
                         size='large'
                         className='text-red-primary capitalize'
@@ -37,8 +35,7 @@ const DeleteTaskDialog = () => {
 
                 <DialogDescription>
                     <Typography
-                        // TODO: Change the text to the task title
-                        text='Are you sure you want to delete the ‘Build settings UI’ task and its subtasks? This action cannot be reversed.'
+                        text='Are you sure you want to delete this board?'
                         variant='heading'
                         size='small'
                     />
@@ -51,10 +48,8 @@ const DeleteTaskDialog = () => {
                             fluid={true}
                             text='Delete'
                             onClick={() => {
-                                deleteTaskById({ id: task?.id ?? '' })
-
+                                deleteBoardById({ id: selectedBoard?.id ?? '' })
                                 setType('')
-                                setTaskToView(null)
                             }}
                         />
 
@@ -64,7 +59,9 @@ const DeleteTaskDialog = () => {
                             size='small'
                             fluid={true}
                             text='Cancel'
-                            onClick={() => setType('view-task-dialog')}
+                            onClick={() => {
+                                setType('')
+                            }}
                         />
                     </div>
                 </DialogDescription>
@@ -73,4 +70,4 @@ const DeleteTaskDialog = () => {
     )
 }
 
-export default DeleteTaskDialog
+export default DeleteBoardDialog

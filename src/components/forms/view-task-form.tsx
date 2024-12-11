@@ -133,7 +133,7 @@ const ViewTaskForm = () => {
     // INFO: Fix for prod only, obviosly this will run for dev too
     useEffect(() => {
         if (!task?.columnId) {
-            return;
+            return
         }
 
         form.setValue('status', task.columnId)

@@ -7,6 +7,7 @@ interface Props {
     variant: 'primary' | 'secondary' | 'danger'
     size: 'large' | 'small'
     fluid?: boolean
+    icon?: React.ReactNode
 }
 
 export interface ButtonProps
@@ -14,7 +15,7 @@ export interface ButtonProps
         Props {}
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, fluid, size, text, ...props }, ref) => {
+    ({ className, variant, fluid, size, text, icon, ...props }, ref) => {
         const colors = {
             primary:
                 'bg-purple-primary text-white hover:bg-purple-secondary focus-visible:ring-white focus-visible:ring-2',
@@ -43,6 +44,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 ref={ref}
                 {...props}
             >
+                {!!icon ? icon : null}
                 {text}
             </button>
         )

@@ -13,7 +13,7 @@ export const createTaskService = ({
     const task: Task = {
         id: uuidv4(),
         title: values.title,
-        description: values.description ?? "",
+        description: values.description ?? '',
         columnId: values.status, // values.status will contain the columnId
     }
 

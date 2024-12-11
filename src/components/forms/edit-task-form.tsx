@@ -31,9 +31,9 @@ import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
 import { Subtask } from 'src/types/mock'
 import { z } from 'zod'
-import { useStore } from 'zustand'
 import FormTextAreaGroup from '../ui/custom/form/form-text-area-group'
 import TaskImages from '../ui/custom/form/task-images'
+import { useStore } from 'src/store/data/hooks'
 
 const EditTaskForm = () => {
     const { setOpen, setType } = useDialog()
@@ -41,11 +41,11 @@ const EditTaskForm = () => {
     const [images, setImages] = useState<string[]>([])
 
     const task = useStore(useTasks, (state) => state.taskToView)
-    const setTask = useStore(useTasks, (state) => state.setTask)
-    const { subtasks, setSubtask, setSubtasks } = useStore(
-        useSubTask,
-        (state) => state
-    )
+
+    const setTask = useTasks((state) => state.setTask)
+    const { setSubtask, setSubtasks } = useSubTask((state) => state)
+
+    const subtasks = useStore(useSubTask, (state) => state.subtasks)
 
     const form = useForm<z.infer<typeof taskFormSchema>>({
         resolver: zodResolver(taskFormSchema),
@@ -76,7 +76,7 @@ const EditTaskForm = () => {
                 {
                     id: values.id,
                     title: values.title,
-                    description: values.description ?? "",
+                    description: values.description ?? '',
                     columnId: values.status,
                     images,
                 },
@@ -137,7 +137,7 @@ const EditTaskForm = () => {
         }
 
         setImages([...task.images])
-    }, [task?.images])
+    }, [task?.images, task])
 
     // TODO: Extract it into a service, add/edit task form uses it
     const onPasteTextArea = (

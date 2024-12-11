@@ -4,6 +4,7 @@ import AddTaskDialog from 'src/components/ui/custom/dialog/add-task-dialog'
 import ViewTaskDialog from 'src/components/ui/custom/dialog/view-task-dialog'
 import EditTaskDialog from 'src/components/ui/custom/dialog/edit-task-dialog'
 import DeleteTaskDialog from 'src/components/ui/custom/dialog/delete-task-dialog'
+import DeleteBoardDialog from 'src/components/ui/custom/dialog/delete-board-dialog'
 
 const Dialogs = () => {
     return (
@@ -14,6 +15,7 @@ const Dialogs = () => {
             <ViewTaskDialog />
             <EditTaskDialog />
             <DeleteTaskDialog />
+            <DeleteBoardDialog />
         </>
     )
 }

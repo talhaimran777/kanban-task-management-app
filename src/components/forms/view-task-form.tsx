@@ -31,6 +31,7 @@ import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
 import { Subtask, Task } from 'src/types/mock'
 import { z } from 'zod'
+import FormInputGroup from '../ui/custom/form/form-input-group'
 
 // TODO: This form is rendering twice, fix it
 const ViewTaskForm = () => {
@@ -206,54 +207,15 @@ const ViewTaskForm = () => {
                         </div>
                     )}
 
-                    {/* TODO */}
-                    {/* Create a common component for this FormField */}
-                    <FormField
-                        control={form.control}
+                    <FormInputGroup
                         name='status'
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>
-                                    <Typography
-                                        text='Current Status'
-                                        variant='heading'
-                                        size='small'
-                                        className='text-black dark:text-white'
-                                    />
-                                </FormLabel>
-                                <Select
-                                    onValueChange={(value) => {
-                                        field.onChange(value)
-                                    }}
-                                    defaultValue={field.value}
-                                    value={field.value}
-                                >
-                                    <FormControl className='dark:bg-dark-grey dark:border-grey-ternary dark:focus-visible:ring-purple-primary dark:focus:ring-purple-primary focus-visible:ring-purple-primary focus-visible:ring-offset-0 focus-visible:ring-2'>
-                                        <SelectTrigger autoFocus={false}>
-                                            <SelectValue placeholder='Select status' />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent className='dark:bg-dark-grey'>
-                                        {columns.map((col) => (
-                                            <SelectItem
-                                                key={col.id}
-                                                value={col.id}
-                                            >
-                                                {col.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <Button
-                        type='submit'
-                        variant='primary'
-                        size='small'
-                        fluid={true}
-                        text='Update Task'
+                        label='Status'
+                        control={form.control}
+                        disabled={true}
+                        value={
+                            columns.find((col) => col.id === task?.columnId)
+                                ?.name ?? ''
+                        }
                     />
                 </form>
             </Form>

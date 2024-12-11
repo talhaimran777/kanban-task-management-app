@@ -18,10 +18,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant, fluid, size, text, icon, ...props }, ref) => {
         const colors = {
             primary:
-                'bg-purple-primary text-white hover:bg-purple-secondary focus-visible:ring-white focus-visible:ring-2',
+                'bg-purple-primary text-white disabled:bg-purple-secondary hover:bg-purple-secondary focus-visible:ring-white focus-visible:ring-2',
             secondary:
-                'bg-[#EFEFF9] text-purple-primary hover:bg-[#D8D7F1] focus-visible:ring-purple-primary focus-visible:ring-2',
-            danger: 'bg-red-primary text-white hover:bg-red-secondary',
+                'bg-[#EFEFF9] text-purple-primary disabled:bg-[#D8D7F1] hover:bg-[#D8D7F1] focus-visible:ring-purple-primary focus-visible:ring-2',
+            danger: 'bg-red-primary text-white disabled:bg-red-secondary hover:bg-red-secondary',
         }
 
         const sizes = {

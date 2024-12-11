@@ -15,7 +15,7 @@ import AddTaskButton from 'src/components/others/tasks/add-task-button'
 import useDialog from 'src/store/dialog'
 import useCurrentBoard from 'src/services/board/get-current-board'
 
-// 72 px height mobile
+// 80 px height mobile
 const Navbar = () => {
     const { open, setOpen, setType } = useDialog()
     const currentBoard = useCurrentBoard()

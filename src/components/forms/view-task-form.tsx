@@ -5,23 +5,10 @@ import { useCallback, useEffect } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { Checkbox } from 'src/components/ui/checkbox'
 import Button from 'src/components/ui/custom/button'
+import FormInputGroup from 'src/components/ui/custom/form/form-input-group'
 import TaskImages from 'src/components/ui/custom/form/task-images'
 import Typography from 'src/components/ui/custom/typography'
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from 'src/components/ui/form'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from 'src/components/ui/select'
+import { Form, FormControl, FormField, FormLabel } from 'src/components/ui/form'
 import taskFormSchema from 'src/schema/task-form-schema'
 import useCurrentBoard from 'src/services/board/get-current-board'
 import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
@@ -31,7 +18,6 @@ import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
 import { Subtask, Task } from 'src/types/mock'
 import { z } from 'zod'
-import FormInputGroup from '../ui/custom/form/form-input-group'
 
 // TODO: This form is rendering twice, fix it
 const ViewTaskForm = () => {
@@ -216,6 +202,13 @@ const ViewTaskForm = () => {
                             columns.find((col) => col.id === task?.columnId)
                                 ?.name ?? ''
                         }
+                    />
+                    <Button
+                        type='submit'
+                        variant='primary'
+                        size='small'
+                        fluid={true}
+                        text='Update Task'
                     />
                 </form>
             </Form>

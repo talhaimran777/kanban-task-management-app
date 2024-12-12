@@ -29,10 +29,26 @@ import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
 import useSubTask from 'src/store/data/subtasks'
 import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
-import { Subtask } from 'src/types/mock'
+import { Subtask, Subtasks } from 'src/types/mock'
 import { z } from 'zod'
 import FormTextAreaGroup from '../ui/custom/form/form-text-area-group'
 import TaskImages from '../ui/custom/form/task-images'
+
+// TODO: Extract this into a service
+const resetSubtasksByTaskId = (
+    taskId: string,
+    subtasks: Subtasks
+): Subtasks => {
+    const updatedSubtasks: Subtasks = subtasks
+
+    for (const id in subtasks) {
+        if (subtasks[id].taskId === taskId) {
+            delete updatedSubtasks[id]
+        }
+    }
+
+    return updatedSubtasks
+}
 
 const EditTaskForm = () => {
     const { setOpen, setType } = useDialog()
@@ -79,7 +95,7 @@ const EditTaskForm = () => {
             )
 
             // TODO: Extract this into a service
-            const subtasks =
+            const formSubtasks =
                 values.subtasks?.map((subtask) => ({
                     id: subtask.id ?? uuidv4(),
                     title: subtask.name,
@@ -87,9 +103,9 @@ const EditTaskForm = () => {
                     taskId: values.id,
                 })) ?? []
 
-            setSubtasks({})
+            setSubtasks(resetSubtasksByTaskId(values.id, subtasks))
 
-            subtasks.forEach((subtask) => {
+            formSubtasks.forEach((subtask) => {
                 setSubtask(subtask as Subtask, subtask.id)
             })
 

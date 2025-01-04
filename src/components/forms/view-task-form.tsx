@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { Checkbox } from 'src/components/ui/checkbox'
 import Button from 'src/components/ui/custom/button'
@@ -9,7 +9,7 @@ import FormInputGroup from 'src/components/ui/custom/form/form-input-group'
 import TaskImages from 'src/components/ui/custom/form/task-images'
 import Typography from 'src/components/ui/custom/typography'
 import { Form, FormControl, FormField, FormLabel } from 'src/components/ui/form'
-import viewTaskFormSchema from 'src/schema/view-task-form-schema'
+import taskFormSchema from 'src/schema/task-form-schema'
 import useCurrentBoard from 'src/services/board/get-current-board'
 import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
 import { useStore } from 'src/store/data/hooks'
@@ -21,6 +21,8 @@ import { z } from 'zod'
 
 // TODO: This form is rendering twice, fix it
 const ViewTaskForm = () => {
+    const [status, setStatus] = useState<string>("");
+
     const { setOpen, setType } = useDialog()
     const task = useStore(useTasks, (state) => state.taskToView)
 
@@ -31,8 +33,8 @@ const ViewTaskForm = () => {
     const setSubtask = useSubTask((state) => state.setSubtask)
 
     // TODO: Populate the form with the task data here
-    const form = useForm<z.infer<typeof viewTaskFormSchema>>({
-        resolver: zodResolver(viewTaskFormSchema),
+    const form = useForm<z.infer<typeof taskFormSchema>>({
+        resolver: zodResolver(taskFormSchema),
         defaultValues: {
             title: '',
             description: '',
@@ -49,7 +51,7 @@ const ViewTaskForm = () => {
     const selectedBoard = useCurrentBoard()
     const columns = getColumnsByBoardId(selectedBoard?.id as string)
 
-    function onSubmit(values: z.infer<typeof viewTaskFormSchema>) {
+    function onSubmit(values: z.infer<typeof taskFormSchema>) {
         if (values) {
             // TODO: Extract this into a service
             if (!values.id) {
@@ -58,7 +60,7 @@ const ViewTaskForm = () => {
 
             const taskToBeUpdated: Task = task
 
-            taskToBeUpdated.columnId = values.status as string
+            taskToBeUpdated.columnId = values.status ?? status
 
             setTask(taskToBeUpdated, values.id)
 
@@ -98,6 +100,8 @@ const ViewTaskForm = () => {
             console.log('Setting task status', task.columnId)
 
             form.setValue('status', task.columnId)
+
+            setStatus(task.columnId)
 
             // TODO: Extract this into a service, it should receive task id and return subtasks
             const taskSubtasks = Object.values(subtasks).filter(
@@ -194,7 +198,6 @@ const ViewTaskForm = () => {
                                 ?.name ?? ''
                         }
                     />
-
                     <Button
                         type='submit'
                         variant='primary'

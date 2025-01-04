@@ -17,7 +17,7 @@ const viewTaskFormSchema = z.object({
             })
         )
         .optional(),
-    status: z.string().optional()
+    status: z.string().optional(),
 })
 
 export default viewTaskFormSchema

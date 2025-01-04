@@ -9,7 +9,7 @@ import FormInputGroup from 'src/components/ui/custom/form/form-input-group'
 import TaskImages from 'src/components/ui/custom/form/task-images'
 import Typography from 'src/components/ui/custom/typography'
 import { Form, FormControl, FormField, FormLabel } from 'src/components/ui/form'
-import taskFormSchema from 'src/schema/task-form-schema'
+import viewTaskFormSchema from 'src/schema/view-task-form-schema'
 import useCurrentBoard from 'src/services/board/get-current-board'
 import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
 import { useStore } from 'src/store/data/hooks'
@@ -33,8 +33,8 @@ const ViewTaskForm = () => {
     const setSubtask = useSubTask((state) => state.setSubtask)
 
     // TODO: Populate the form with the task data here
-    const form = useForm<z.infer<typeof taskFormSchema>>({
-        resolver: zodResolver(taskFormSchema),
+    const form = useForm<z.infer<typeof viewTaskFormSchema>>({
+        resolver: zodResolver(viewTaskFormSchema),
         defaultValues: {
             title: '',
             description: '',
@@ -51,7 +51,7 @@ const ViewTaskForm = () => {
     const selectedBoard = useCurrentBoard()
     const columns = getColumnsByBoardId(selectedBoard?.id as string)
 
-    function onSubmit(values: z.infer<typeof taskFormSchema>) {
+    function onSubmit(values: z.infer<typeof viewTaskFormSchema>) {
         if (values) {
             // TODO: Extract this into a service
             if (!values.id) {

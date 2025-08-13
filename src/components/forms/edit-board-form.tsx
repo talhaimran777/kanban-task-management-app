@@ -11,7 +11,6 @@ import editBoardService from 'src/services/board/edit-board-service'
 import addColumnService from 'src/services/column/add-columns-service'
 import createColumnService from 'src/services/column/create-column-service'
 import editColumnService from 'src/services/column/edit-columns-service'
-import useColumns from 'src/store/data/columns'
 import useDialog from 'src/store/dialog'
 import { Board, Column } from 'src/types/mock'
 import { z } from 'zod'
@@ -24,7 +23,6 @@ const EditBoardForm = ({
     columns: Column[]
 }) => {
     const { setOpen, setType } = useDialog()
-    const { resetColumns } = useColumns((state) => state)
     const form = useForm<z.infer<typeof boardFormSchema>>({
         resolver: zodResolver(boardFormSchema),
         defaultValues: {
@@ -49,8 +47,8 @@ const EditBoardForm = ({
                 name: values.name,
             })
 
-            // TODO: check if any of the columns contains tasks in them.
-            resetColumns()
+            // TODO: check if any of the columns contains tasks in them, I don't know what i was doing here.
+            // resetColumns()
 
             if (values.columns) {
                 // TODO: Extract this to a service

@@ -10,7 +10,9 @@ import boardFormSchema from 'src/schema/board-form-schema'
 import editBoardService from 'src/services/board/edit-board-service'
 import addColumnService from 'src/services/column/add-columns-service'
 import createColumnService from 'src/services/column/create-column-service'
+import deleteColumnsByIds from 'src/services/column/delete-columns-service'
 import editColumnService from 'src/services/column/edit-columns-service'
+import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
 import { Board, Column } from 'src/types/mock'
 import { z } from 'zod'
@@ -47,24 +49,47 @@ const EditBoardForm = ({
                 name: values.name,
             })
 
-            // TODO: check if any of the columns contains tasks in them, I don't know what i was doing here.
-            // resetColumns()
+            const submitted = values.columns ?? []
+            const resolvedColumns: Column[] = submitted.map((col) =>
+                col.id
+                    ? { ...col, boardId: board.id }
+                    : createColumnService(col.name, board.id)
+            )
 
-            if (values.columns) {
-                // TODO: Extract this to a service
-                // TODO: if values.columns length is less than the columns for the current board
-                // then delete the extra columns
-                values.columns.forEach((column) => {
-                    if (column.id) {
-                        return editColumnService({
-                            id: column.id,
-                            name: column.name,
-                            boardId: board.id,
-                        })
+            const submittedIds = new Set(resolvedColumns.map((c) => c.id))
+            const removedIds = columns
+                .map((c) => c.id)
+                .filter((id) => id && !submittedIds.has(id))
+
+            if (removedIds.length && resolvedColumns.length) {
+                const { tasks, setTasks } = useTasks.getState()
+                const targetColumnId = resolvedColumns[0].id
+                const removedSet = new Set(removedIds)
+                const next = { ...tasks }
+                let changed = false
+                for (const id of Object.keys(tasks)) {
+                    const task = tasks[id]
+                    if (removedSet.has(task.columnId)) {
+                        next[id] = { ...task, columnId: targetColumnId }
+                        changed = true
                     }
+                }
+                if (changed) {
+                    setTasks(next)
+                }
+            }
 
-                    addColumnService(createColumnService(column.name, board.id))
-                })
+            if (removedIds.length) {
+                deleteColumnsByIds(removedIds)
+            }
+
+            const initialIds = new Set(columns.map((c) => c.id))
+            for (const column of resolvedColumns) {
+                if (initialIds.has(column.id)) {
+                    editColumnService(column)
+                } else {
+                    addColumnService(column)
+                }
             }
 
             setOpen(false)

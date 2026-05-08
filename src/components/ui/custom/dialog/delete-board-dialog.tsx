@@ -11,7 +11,9 @@ import {
     DialogTitle,
 } from 'src/components/ui/dialog'
 
-import deleteBoardById from 'src/services/board/delete-board-by-id'
+import {
+    deleteBoardCascade,
+} from 'src/lib/domain/boards'
 import useCurrentBoard from 'src/services/board/get-current-board'
 
 const DeleteBoardDialog = () => {
@@ -48,7 +50,9 @@ const DeleteBoardDialog = () => {
                             fluid={true}
                             text='Delete'
                             onClick={() => {
-                                deleteBoardById({ id: selectedBoard?.id ?? '' })
+                                if (selectedBoard?.id) {
+                                    deleteBoardCascade(selectedBoard.id)
+                                }
                                 setType('')
                             }}
                         />

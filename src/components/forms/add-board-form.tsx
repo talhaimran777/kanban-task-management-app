@@ -6,10 +6,10 @@ import Button from 'src/components/ui/custom/button'
 import FormInputGroup from 'src/components/ui/custom/form/form-input-group'
 import { useFieldArray, useForm } from 'react-hook-form'
 import boardFormSchema from 'src/schema/board-form-schema'
-import addBoardService from 'src/services/board/add-board-service'
-import { createBoardService } from 'src/services/board/create-board-service'
-import makeBoardActive from 'src/services/board/make-board-active'
-import addColumnService from 'src/services/column/add-columns-service'
+import {
+    createBoardFromForm,
+    makeBoardActive,
+} from 'src/lib/domain/boards'
 import useDialog from 'src/store/dialog'
 import { Form } from 'src/components/ui/form'
 import { z } from 'zod'
@@ -36,14 +36,7 @@ const AddBoardForm = () => {
 
     const onSubmit = async (values: z.infer<typeof boardFormSchema>) => {
         try {
-            // Create board and its associated columns if any
-            const [board, columns] = createBoardService(values)
-
-            // Add board
-            addBoardService(board)
-
-            // Add columns
-            columns.forEach((column) => addColumnService(column))
+            const board = createBoardFromForm(values)
 
             // Make newly created board as active
             makeBoardActive(board.id)

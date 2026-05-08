@@ -1,5 +1,4 @@
 'use client'
-import clsx from 'clsx'
 
 import {
     DropdownMenu,
@@ -29,19 +28,23 @@ const Navbar = () => {
             <div className='flex justify-between items-center gap-4'>
                 <AddTaskButton />
                 <DropdownMenu>
-                    <DropdownMenuTrigger disabled={!currentBoard}>
-                        <Image
-                            className={clsx({
-                                'cursor-pointer': !!currentBoard,
-                            })}
-                            src={VerticalEllipsisIcon}
-                            alt='Vertical Ellipsis Icon'
-                            height={4}
-                            width={4}
-                        />
+                    <DropdownMenuTrigger asChild>
+                        <button
+                            type='button'
+                            className='p-1 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-purple-primary cursor-pointer'
+                            aria-label='Board menu'
+                        >
+                            <Image
+                                src={VerticalEllipsisIcon}
+                                alt=''
+                                height={4}
+                                width={4}
+                            />
+                        </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                    <DropdownMenuContent align='end'>
                         <DropdownMenuItem
+                            disabled={!currentBoard}
                             onClick={() => {
                                 setOpen(true)
                                 setType('edit-board-dialog')
@@ -50,6 +53,7 @@ const Navbar = () => {
                             Edit Board
                         </DropdownMenuItem>
                         <DropdownMenuItem
+                            disabled={!currentBoard}
                             onClick={() => {
                                 setOpen(true)
                                 setType('delete-board-dialog')
@@ -57,6 +61,14 @@ const Navbar = () => {
                             className='text-red-primary'
                         >
                             Delete Board
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => {
+                                setOpen(true)
+                                setType('github-sync-dialog')
+                            }}
+                        >
+                            GitHub sync
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

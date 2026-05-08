@@ -12,6 +12,8 @@ import { Form, FormControl, FormField, FormLabel } from 'src/components/ui/form'
 import viewTaskFormSchema from 'src/schema/view-task-form-schema'
 import useCurrentBoard from 'src/services/board/get-current-board'
 import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
+import { putTask } from 'src/lib/domain/tasks'
+import { upsertSubtask } from 'src/lib/domain/subtasks'
 import { useStore } from 'src/store/data/hooks'
 import useSubTask from 'src/store/data/subtasks'
 import useTasks from 'src/store/data/tasks'
@@ -26,11 +28,7 @@ const ViewTaskForm = () => {
     const { setOpen, setType } = useDialog()
     const task = useStore(useTasks, (state) => state.taskToView)
 
-    // INFO: we will wrap useSubTask with useStore, as we are trying to get the subtasks
     const subtasks = useStore(useSubTask, (state) => state.subtasks)
-
-    const setTask = useTasks((state) => state.setTask)
-    const setSubtask = useSubTask((state) => state.setSubtask)
 
     // TODO: Populate the form with the task data here
     const form = useForm<z.infer<typeof viewTaskFormSchema>>({
@@ -52,26 +50,21 @@ const ViewTaskForm = () => {
     const columns = getColumnsByBoardId(selectedBoard?.id as string)
 
     function onSubmit(values: z.infer<typeof viewTaskFormSchema>) {
-        if (values) {
-            // TODO: Extract this into a service
-            if (!values.id) {
-                return
-            }
-
-            const taskToBeUpdated: Task = task
-
-            taskToBeUpdated.columnId = values.status ?? status
-
-            setTask(taskToBeUpdated, values.id)
+        if (values.id && task) {
+            putTask({
+                ...task,
+                columnId: values.status ?? status,
+            })
 
             values.subtasks?.forEach((subtask) => {
                 if (subtask.id) {
-                    const subtaskToBeUpdated: Subtask = subtasks[subtask.id]
-                    subtaskToBeUpdated.isCompleted = Boolean(
-                        subtask.isCompleted
-                    )
-
-                    setSubtask(subtaskToBeUpdated, subtask.id)
+                    const base = subtasks[subtask.id]
+                    if (base) {
+                        upsertSubtask({
+                            ...base,
+                            isCompleted: Boolean(subtask.isCompleted),
+                        })
+                    }
                 }
             })
 

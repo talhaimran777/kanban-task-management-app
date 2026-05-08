@@ -1,30 +1,25 @@
 import { LegacyRef } from 'react'
 import { useDrop } from 'react-dnd'
 import Typography from 'src/components/ui/custom/typography'
+import { moveTask } from 'src/lib/domain/tasks'
 import { useStore } from 'src/store/data/hooks'
-import { default as useTask, default as useTasks } from 'src/store/data/tasks'
+import useTasks from 'src/store/data/tasks'
 import { Column, Task, Tasks } from 'src/types/mock'
 import { ItemTypes } from 'src/utils'
 import ColumnTasks from '../tasks/column-tasks'
 
-// TODO: Extract this to a service file
 const getTasksByColumnId = (tasks: Tasks, columnId: string) => {
     return Object.values(tasks).filter((task) => task.columnId === columnId)
 }
 
 const BoardColumn = ({ column }: { column: Column }) => {
-    const tasks = useStore(useTask, (state) => state.tasks)
+    const tasks = useStore(useTasks, (state) => state.tasks)
     const columnTasks = tasks && getTasksByColumnId(tasks, column.id)
-    const setTask = useTasks((state) => state.setTask)
 
     const [, drop] = useDrop(() => ({
         accept: ItemTypes.TASK,
         drop: (task: Task) => {
-            console.log(
-                `Task with ID: ${task.title} was dropped on ${column.name}`
-            )
-
-            setTask({ ...task, columnId: column.id }, task.id)
+            moveTask(task, column.id)
         },
     }))
 

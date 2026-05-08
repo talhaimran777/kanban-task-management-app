@@ -7,12 +7,14 @@ import Button from 'src/components/ui/custom/button'
 import FormInputGroup from 'src/components/ui/custom/form/form-input-group'
 import { Form } from 'src/components/ui/form'
 import boardFormSchema from 'src/schema/board-form-schema'
-import editBoardService from 'src/services/board/edit-board-service'
-import addColumnService from 'src/services/column/add-columns-service'
-import createColumnService from 'src/services/column/create-column-service'
-import deleteColumnsByIds from 'src/services/column/delete-columns-service'
-import editColumnService from 'src/services/column/edit-columns-service'
-import useTasks from 'src/store/data/tasks'
+import { updateBoardName } from 'src/lib/domain/boards'
+import {
+    addColumn,
+    createColumnForBoard,
+    deleteColumnsByIds,
+    putColumn,
+} from 'src/lib/domain/columns'
+import { moveTasksOffRemovedColumns } from 'src/lib/domain/tasks'
 import useDialog from 'src/store/dialog'
 import { Board, Column } from 'src/types/mock'
 import { z } from 'zod'
@@ -44,17 +46,19 @@ const EditBoardForm = ({
 
     const onSubmit = async (values: z.infer<typeof boardFormSchema>) => {
         try {
-            editBoardService({
-                id: board.id,
-                name: values.name,
-            })
+            updateBoardName(board.id, values.name)
 
             const submitted = values.columns ?? []
-            const resolvedColumns: Column[] = submitted.map((col) =>
-                col.id
-                    ? { ...col, boardId: board.id }
-                    : createColumnService(col.name, board.id)
-            )
+            const resolvedColumns: Column[] = submitted.map((col) => {
+                if (col.id) {
+                    const prev = columns.find((c) => c.id === col.id)
+                    if (!prev) {
+                        return createColumnForBoard(col.name, board.id)
+                    }
+                    return { ...prev, name: col.name, boardId: board.id }
+                }
+                return createColumnForBoard(col.name, board.id)
+            })
 
             const submittedIds = new Set(resolvedColumns.map((c) => c.id))
             const removedIds = columns
@@ -62,21 +66,7 @@ const EditBoardForm = ({
                 .filter((id) => id && !submittedIds.has(id))
 
             if (removedIds.length && resolvedColumns.length) {
-                const { tasks, setTasks } = useTasks.getState()
-                const targetColumnId = resolvedColumns[0].id
-                const removedSet = new Set(removedIds)
-                const next = { ...tasks }
-                let changed = false
-                for (const id of Object.keys(tasks)) {
-                    const task = tasks[id]
-                    if (removedSet.has(task.columnId)) {
-                        next[id] = { ...task, columnId: targetColumnId }
-                        changed = true
-                    }
-                }
-                if (changed) {
-                    setTasks(next)
-                }
+                moveTasksOffRemovedColumns(removedIds, resolvedColumns[0].id)
             }
 
             if (removedIds.length) {
@@ -86,9 +76,9 @@ const EditBoardForm = ({
             const initialIds = new Set(columns.map((c) => c.id))
             for (const column of resolvedColumns) {
                 if (initialIds.has(column.id)) {
-                    editColumnService(column)
+                    putColumn(column)
                 } else {
-                    addColumnService(column)
+                    addColumn(column)
                 }
             }
 

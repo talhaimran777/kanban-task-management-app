@@ -11,7 +11,7 @@ import {
     DialogTitle,
 } from 'src/components/ui/dialog'
 
-import deleteTaskById from 'src/services/task/delete-task-by-task-id'
+import { deleteTaskCascade } from 'src/lib/domain/tasks'
 import useTasks from 'src/store/data/tasks'
 
 const DeleteTaskDialog = () => {
@@ -51,7 +51,9 @@ const DeleteTaskDialog = () => {
                             fluid={true}
                             text='Delete'
                             onClick={() => {
-                                deleteTaskById({ id: task?.id ?? '' })
+                                if (task?.id) {
+                                    deleteTaskCascade(task.id)
+                                }
 
                                 setType('')
                                 setTaskToView(null)

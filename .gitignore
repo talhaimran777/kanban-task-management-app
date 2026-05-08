@@ -46,3 +46,7 @@ package-lock.json
 
 # notes
 notes.txt
+
+# environment variables
+.env
+.env.example

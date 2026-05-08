@@ -24,9 +24,7 @@ import {
 import taskFormSchema from 'src/schema/task-form-schema'
 import useCurrentBoard from 'src/services/board/get-current-board'
 import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
-import addTaskService from 'src/services/task/add-task-service'
-import { createTaskService } from 'src/services/task/create-task-service'
-import useSubTask from 'src/store/data/subtasks'
+import { addTaskWithSubtasks, createTaskFromForm } from 'src/lib/domain/tasks'
 import useDialog from 'src/store/dialog'
 import { z } from 'zod'
 import FormTextAreaGroup from '../ui/custom/form/form-text-area-group'
@@ -63,17 +61,8 @@ const AddTaskForm = () => {
 
     function onSubmit(values: z.infer<typeof taskFormSchema>) {
         if (values) {
-            const [task, subtasks] = createTaskService({ values, images })
-
-            // Add newly created task to the board
-            addTaskService({ task })
-
-            // TODO: Extract this to a service
-            subtasks.forEach((subtask) => {
-                const { subtasks, setSubtasks } = useSubTask.getState()
-
-                setSubtasks({ ...subtasks, [subtask.id]: subtask })
-            })
+            const { task, subtasks } = createTaskFromForm(values, images)
+            addTaskWithSubtasks(task, subtasks)
 
             setOpen(false)
             setType('')

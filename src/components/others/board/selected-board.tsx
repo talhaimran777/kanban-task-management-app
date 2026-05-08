@@ -6,7 +6,7 @@ import MobileMenuDialog from 'src/components/ui/custom/dialog/mobile-menu-dialog
 import Typography from 'src/components/ui/custom/typography'
 import { Skeleton } from 'src/components/ui/skeleton'
 import useCurrentBoard from 'src/services/board/get-current-board'
-import makeBoardActive from 'src/services/board/make-board-active'
+import { makeBoardActive } from 'src/lib/domain/boards'
 import useBoards from 'src/store/data/boards'
 import { useStore, useWindowSize } from 'src/store/data/hooks'
 import useBound from 'src/store/data/hydrated'

@@ -19,6 +19,7 @@ export const useStore = <T, F>(
     return data!
 }
 
+// TODO: Refactor this hook to somewhere else, that make sense.
 export const useWindowSize = (): WindowSize => {
     const [size, setSize] = useState<WindowSize>({
         width: 0,

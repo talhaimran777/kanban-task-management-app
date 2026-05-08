@@ -26,37 +26,22 @@ import {
 import taskFormSchema from 'src/schema/task-form-schema'
 import useCurrentBoard from 'src/services/board/get-current-board'
 import getColumnsByBoardId from 'src/services/column/get-columns-by-board-id'
+import { normalizeSubtask } from 'src/lib/domain/meta'
+import { putTask, replaceSubtasksForTask } from 'src/lib/domain/tasks'
 import useSubTask from 'src/store/data/subtasks'
 import useTasks from 'src/store/data/tasks'
 import useDialog from 'src/store/dialog'
-import { Subtask, Subtasks } from 'src/types/mock'
+import type { Subtask } from 'src/types/mock'
 import { z } from 'zod'
 import FormTextAreaGroup from '../ui/custom/form/form-text-area-group'
 import TaskImages from '../ui/custom/form/task-images'
-
-// TODO: Extract this into a service
-const resetSubtasksByTaskId = (
-    taskId: string,
-    subtasks: Subtasks
-): Subtasks => {
-    const updatedSubtasks: Subtasks = subtasks
-
-    for (const id in subtasks) {
-        if (subtasks[id].taskId === taskId) {
-            delete updatedSubtasks[id]
-        }
-    }
-
-    return updatedSubtasks
-}
 
 const EditTaskForm = () => {
     const { setOpen, setType } = useDialog()
 
     const [images, setImages] = useState<string[]>([])
 
-    const { taskToView: task, setTask } = useTasks((state) => state)
-    const { setSubtask, setSubtasks, subtasks } = useSubTask((state) => state)
+    const { taskToView: task, setTaskToView } = useTasks((state) => state)
 
     const form = useForm<z.infer<typeof taskFormSchema>>({
         resolver: zodResolver(taskFormSchema),
@@ -82,32 +67,29 @@ const EditTaskForm = () => {
     const columns = getColumnsByBoardId(selectedBoard?.id as string)
 
     function onSubmit(values: z.infer<typeof taskFormSchema>) {
-        if (values.id) {
-            setTask(
-                {
-                    id: values.id,
-                    title: values.title,
-                    description: values.description ?? '',
-                    columnId: values.status,
-                    images,
-                },
-                values.id
-            )
-
-            // TODO: Extract this into a service
-            const formSubtasks =
-                values.subtasks?.map((subtask) => ({
-                    id: subtask.id ?? uuidv4(),
-                    title: subtask.name,
-                    isCompleted: subtask.isCompleted,
-                    taskId: values.id,
-                })) ?? []
-
-            setSubtasks(resetSubtasksByTaskId(values.id, subtasks))
-
-            formSubtasks.forEach((subtask) => {
-                setSubtask(subtask as Subtask, subtask.id)
+        if (values.id && task) {
+            putTask({
+                ...task,
+                title: values.title,
+                description: values.description ?? '',
+                columnId: values.status,
+                images,
             })
+
+            const formSubtasks =
+                values.subtasks?.map((subtask) =>
+                    normalizeSubtask({
+                        id: subtask.id ?? uuidv4(),
+                        title: subtask.name,
+                        isCompleted: subtask.isCompleted ?? false,
+                        taskId: values.id,
+                    })
+                ) ?? []
+
+            replaceSubtasksForTask(values.id, formSubtasks)
+
+            const refreshed = useTasks.getState().tasks[values.id]
+            setTaskToView(refreshed ?? null)
 
             setOpen(false)
             setType('')
@@ -133,7 +115,7 @@ const EditTaskForm = () => {
         }
 
         // TODO: Extract this into a service, it should receive task id and return subtasks
-        const taskSubtasks = Object.values(subtasks).filter(
+        const taskSubtasks = Object.values(useSubTask.getState().subtasks).filter(
             (subtask: Subtask) => subtask.taskId === task.id
         )
 
